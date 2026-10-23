@@ -46,6 +46,7 @@ no ads. It is built to feel like Apple made a stationery app: calm, tactile, pre
   tape / pin / paperclip, tilt.
 - 🗑 **Throw notes away** — drag a note: it crumples in your hand and flies into the waste bin. *Put Back* or ⌘Z.
 - ↩️ **Undo everything**, **daily backups**, and a per-record merge format that is ready for iCloud Drive sync.
+- 🌙 **Light and "night desk" dark** — the same kraft desk under a warm lamp. System / Light / Dark in Settings.
 - 🌍 **Full English + Arabic UI** with right-to-left layout and a Western (123) / Arabic (١٢٣) digits option.
   Each note picks its handwriting and direction from its own text.
 
@@ -62,6 +63,10 @@ no ads. It is built to feel like Apple made a stationery app: calm, tactile, pre
 | Stickies on your desktop | Make it yours |
 |---|---|
 | <img src="docs/images/desktop.jpg" alt="Sticky notes floating on the macOS desktop in a tidy column"> | <img src="docs/images/look.jpg" alt="Look panel: paper colour, handwriting, size, ink, ruling, fastener and tilt"> |
+
+| Night desk (dark) | Dark, in Arabic |
+|---|---|
+| <img src="docs/images/board-dark.jpg" alt="Kraft board in dark mode: a warm brown night desk with dimmed pastel sticky notes"> | <img src="docs/images/editor-ar-dark.jpg" alt="Sticky editor in dark mode with the Arabic right-to-left interface"> |
 
 | A polite reminder, in Arabic | Language and digits |
 |---|---|
@@ -94,7 +99,7 @@ xattr -dr com.apple.quarantine /Applications/Kraft.app
 ```sh
 git clone https://github.com/hamdalaa/kraft.git && cd kraft
 ./scripts/bundle.sh          # → build/Kraft.app
-./scripts/test.sh            # Swift Testing, 170+ tests
+./scripts/test.sh            # Swift Testing, 180+ tests
 open build/Kraft.app
 ```
 
@@ -124,11 +129,10 @@ scripts/          bundle.sh · test.sh · snapshots.sh · make-icon.sh
 ```
 
 `./scripts/snapshots.sh` renders every screen offscreen in English and Arabic (`snapshots/en`, `snapshots/ar`) —
-handy for visual review without clicking through the app.
+plus `en-dark` / `ar-dark` — handy for visual review without clicking through the app.
 
 ## Roadmap
 
-- Dark appearance
 - iPhone companion app syncing through iCloud Drive
 
 ## License
