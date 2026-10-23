@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/images/icon.png" width="128" alt="Kraft app icon — a die-cut sticky note on kraft paper">
+<img src="docs/images/icon.png" width="128" alt="Kraft app icon — a lined note page with a curled corner">
 
 # Kraft
 
