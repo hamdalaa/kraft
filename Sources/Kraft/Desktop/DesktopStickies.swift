@@ -157,29 +157,24 @@ final class DesktopStickiesController {
         DispatchQueue.main.async { board.open(id) }
     }
 
+    /// Right-click on a desktop sticky: the same full menu as the board.
     private func menu(for id: Sticky.ID) -> NSMenu? {
         guard let sticky = store.sticky(id) else { return nil }
-        let menu = NSMenu()
-        menu.addItem(ActionMenuItem(String(localized: "Open in Kraft"), symbol: "macwindow") { [weak self] in
-            self?.openInKraft(id)
-        })
-        let doneTitle = sticky.isDone ? String(localized: "Mark as Not Done") : String(localized: "Mark Done")
-        menu.addItem(ActionMenuItem(doneTitle, symbol: sticky.isDone ? "arrow.uturn.backward" : "checkmark") { [weak self] in
-            self?.store.setDone(!sticky.isDone, for: id)
-        })
-        menu.addItem(ActionMenuItem(String(localized: "Remove from Desktop"), symbol: "pin.slash") { [weak self] in
-            guard let self, let current = self.store.sticky(id) else { return }
-            self.store.update(current.pinnedToDesktop(false), actionName: String(localized: "Remove from Desktop"))
-        })
-        menu.addItem(.separator())
-        menu.addItem(ActionMenuItem(String(localized: "Tidy Desktop Stickies"), symbol: "square.grid.2x2") { [weak self] in
-            self?.tidy()
-        })
-        menu.addItem(ActionMenuItem(String(localized: "Hide Desktop Stickies"), symbol: "eye.slash",
-                                    keyEquivalent: "d", modifiers: [.control, .option]) { [weak self] in
-            self?.toggleAllVisible()
-        })
-        return menu
+        let entries = StickyMenu.entries(for: sticky, store: store, place: .desktop, open: { [weak self] in self?.openInKraft(id) },
+                                         desktop: self)
+        return StickyMenu.nsMenu(entries)
+    }
+
+    /// A sticky carried out of the board window and dropped at `rect` (screen coordinates): pinned there,
+    /// snapped to the grid clear of the others. Returns where it landed.
+    @discardableResult
+    func pin(_ id: Sticky.ID, droppedAt rect: CGRect) -> CGRect? {
+        guard let sticky = store.sticky(id) else { return nil }
+        let others = panels.filter { $0.key != id }.map(\.value.paperRect)
+        let landed = layout.snap(rect, screens: screens, avoiding: others)
+        panels[id]?.setPaperRect(landed, animated: true)
+        store.update(sticky.pinnedToDesktop(true).movedOnDesktop(to: landed), actionName: String(localized: "Pin to Desktop"))
+        return landed
     }
 
     // MARK: Geometry

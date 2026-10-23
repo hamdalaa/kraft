@@ -173,7 +173,11 @@ struct BoardScreen: View {
                     .accessibilityAction(named: Text("Throw Away")) {
                         withAnimation(.spring(duration: 0.5, bounce: 0.2)) { model.store.delete(sticky.id) }
                     }
-                    .contextMenu { DesktopPinButton(sticky: sticky, store: model.store) }
+                    .contextMenu {
+                        StickyContextMenu(entries: StickyMenu.entries(for: sticky, store: model.store, place: .board,
+                                                                      open: { model.open(sticky.id) },
+                                                                      desktop: AppServices.shared.desktop))
+                    }
                     .transition(.opacity)
             }
         }

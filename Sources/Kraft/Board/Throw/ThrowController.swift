@@ -17,7 +17,8 @@ enum ThrowDebug {
 }
 
 /// Hold a sticky to pick it up, fling it at the bin: it crumples, arcs in, the bin bounces.
-/// Release anywhere else and it springs back to its place.
+/// Carry it out of the board window and it follows the pointer over the desktop; drop it there and it is
+/// pinned to the desktop on that spot. Release anywhere else and it springs back to its place.
 @MainActor
 @Observable
 final class ThrowController {
@@ -45,6 +46,10 @@ final class ThrowController {
     private var origin: CGPoint = .zero
     private var grabOffset: CGSize = .zero
     private var delete: ((Sticky.ID) -> Void)?
+
+    /// True while the pointer is outside the board window: the paper rides in `DragOutPanel` instead.
+    private(set) var isOutside = false
+    private var outPanel: DragOutPanel?
 
     var isHolding: Bool { phase == .holding }
     /// Over the bin as soon as the carried paper touches it, not only its centre.
@@ -75,6 +80,7 @@ final class ThrowController {
 
     func move(to point: CGPoint, velocity: CGSize) {
         guard phase == .holding else { return }
+        followOutside()
         let wasOver = isOverBin
         location = CGPoint(x: point.x - grabOffset.width, y: point.y - grabOffset.height)
         // The paper swings with the hand, like holding a sheet by one edge.
@@ -97,6 +103,7 @@ final class ThrowController {
 
     func release(predicted: CGPoint, reduceMotion: Bool) {
         guard phase == .holding else { return }
+        if isOutside { return pinOnDesktop() }
         ThrowDebug.log("release at=\(location) predicted=\(predicted) over=\(isOverBin) bin=\(binFrame)")
         let thrown = binFrame.insetBy(dx: -140, dy: -140).contains(predicted) && Self.isHeadingTo(binFrame, from: location, predicted: predicted)
         if isOverBin || thrown { throwAway(reduceMotion: reduceMotion) } else { springBack() }
@@ -104,6 +111,48 @@ final class ThrowController {
 
     func cancel() {
         if phase == .holding { springBack() }
+    }
+
+    // MARK: Out of the window → desktop
+
+    /// The pointer in screen coordinates, and where the paper's centre is relative to it.
+    private var screenPaperCenter: CGPoint {
+        let mouse = NSEvent.mouseLocation
+        return CGPoint(x: mouse.x - grabOffset.width, y: mouse.y + grabOffset.height)
+    }
+
+    private func followOutside() {
+        guard let sticky, let window = BoardWindow.window else { return }
+        let outside = !window.frame.contains(NSEvent.mouseLocation)
+        if outside != isOutside {
+            isOutside = outside
+            NSHapticFeedbackManager.defaultPerformer.perform(.alignment, performanceTime: .now)
+            if outside {
+                let panel = DragOutPanel(sticky: sticky)
+                panel.carry(paperCenter: screenPaperCenter)
+                panel.show()
+                outPanel = panel
+            } else {
+                outPanel?.dismiss()
+                outPanel = nil
+            }
+        }
+        if outside { outPanel?.carry(paperCenter: screenPaperCenter) }
+    }
+
+    /// Dropped outside the board: pin it to the desktop where it was let go (snapped to the tidy grid).
+    private func pinOnDesktop() {
+        guard let sticky, let panel = outPanel else { return springBack() }
+        let dropped = panel.paperRect(centeredAt: screenPaperCenter)
+        if let landed = AppServices.shared.desktop.pin(sticky.id, droppedAt: dropped) {
+            panel.land(on: landed)
+        } else {
+            panel.dismiss()
+        }
+        NSHapticFeedbackManager.defaultPerformer.perform(.levelChange, performanceTime: .now)
+        outPanel = nil
+        isOutside = false
+        reset()
     }
 
     private func throwAway(reduceMotion: Bool) {
@@ -140,6 +189,9 @@ final class ThrowController {
     }
 
     private func springBack() {
+        outPanel?.dismiss()
+        outPanel = nil
+        isOutside = false
         phase = .returning
         // The paper smooths itself out on the way back.
         withAnimation(.spring(duration: 0.42, bounce: 0.32)) {
@@ -251,6 +303,7 @@ struct ThrowLayer: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .opacity(thrower.isOutside ? 0 : 1)
         .allowsHitTesting(false)
     }
 }

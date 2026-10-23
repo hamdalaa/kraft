@@ -249,3 +249,8 @@
 "Update Available…" = "Update Available…";
 "Couldn’t reach GitHub. Check your connection and try again." = "Couldn’t reach GitHub. Check your connection and try again.";
 "The update couldn’t be installed. Download it from GitHub instead." = "The update couldn’t be installed. Download it from GitHub instead.";
+"Copy Text" = "Copy Text";
+"Small" = "Small";
+"Medium" = "Medium";
+"Large" = "Large";
+"Drop to pin on the desktop" = "Drop to pin on the desktop";

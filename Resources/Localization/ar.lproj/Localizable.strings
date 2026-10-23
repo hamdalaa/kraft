@@ -249,3 +249,8 @@
 "Update Available…" = "يتوفر تحديث…";
 "Couldn’t reach GitHub. Check your connection and try again." = "تعذّر الوصول إلى GitHub. تحقق من اتصالك وحاول مرة أخرى.";
 "The update couldn’t be installed. Download it from GitHub instead." = "تعذّر تثبيت التحديث. نزّله من GitHub بدلًا من ذلك.";
+"Copy Text" = "نسخ النص";
+"Small" = "صغير";
+"Medium" = "متوسط";
+"Large" = "كبير";
+"Drop to pin on the desktop" = "أفلِته لتثبيته على سطح المكتب";

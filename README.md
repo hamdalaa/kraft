@@ -40,10 +40,12 @@ no ads. It is built to feel like Apple made a stationery app: calm, tactile, pre
 - ⌥ **Type a sentence, get a sticky** — `Ali owes me 40$ friday` or `ذكرني بالدواء الساعة ٩ كل يوم` fills in the
   person, amount, date, time and repeat, and shows you what it understood. Press **⌘N** in the app or
   **⌥Space from any app**.
-- 🖥 **Desktop stickies** — pin any note to the Mac desktop. It floats on top, never steals focus, places
+- 🖥 **Desktop stickies** — drag a note out of the window and drop it on the desktop: it is pinned right there. It floats on top, never steals focus, places
   itself without overlapping, and **⌃⌥D** shows or hides them all. Board and desktop are the same note.
 - 🎨 **Make every note yours** — paper colour (or any custom colour), handwriting, size, ink, ruling,
   tape / pin / paperclip, tilt.
+- 🖱 **Right-click any note** — on the board or the desktop: open, done, pin, duplicate, copy text, paper colour,
+  size, ruling, fastener, ink, throw away.
 - 🗑 **Throw notes away** — drag a note: it crumples in your hand and flies into the waste bin. *Put Back* or ⌘Z.
 - ↩️ **Undo everything**, **daily backups**, and a per-record merge format that is ready for iCloud Drive sync.
 - 🌙 **Light and "night desk" dark** — the same kraft desk under a warm lamp. System / Light / Dark in Settings.

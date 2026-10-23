@@ -32,21 +32,3 @@ struct DesktopStickyView: View {
         }
     }
 }
-
-/// "Pin to Desktop" / "Remove from Desktop" for the board sticky's context menu.
-struct DesktopPinButton: View {
-    let sticky: Sticky
-    let store: StickyStore
-
-    var body: some View {
-        if sticky.isOnDesktop {
-            Button("Remove from Desktop", systemImage: "pin.slash") {
-                store.update(sticky.pinnedToDesktop(false), actionName: String(localized: "Remove from Desktop"))
-            }
-        } else {
-            Button("Pin to Desktop", systemImage: "pin") {
-                store.update(sticky.pinnedToDesktop(true), actionName: String(localized: "Pin to Desktop"))
-            }
-        }
-    }
-}

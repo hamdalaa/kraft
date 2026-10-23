@@ -17,6 +17,9 @@ enum BoardWindow {
         openAction?(id: id)
     }
 
+    /// The board window, while it exists.
+    static var window: NSWindow? { NSApp.windows.first(where: isBoard) }
+
     private static func isBoard(_ window: NSWindow) -> Bool {
         !(window is NSPanel) && window.identifier?.rawValue.hasPrefix(id) == true
     }
