@@ -131,7 +131,7 @@ private struct CurlShadow: View {
 
 struct RulingView: View {
     let ruling: Ruling
-    var ink: Color = Color(hex: 0x3B6FB6)
+    var ink: Color = Tok.Material.ruling
 
     var body: some View {
         Canvas { ctx, size in
@@ -170,7 +170,7 @@ struct RulingView: View {
 
 /// Translucent washi tape with zig-zag torn ends.
 struct WashiTape: View {
-    var tint: Color = .white
+    var tint: Color = Tok.Tape.plain
     var body: some View {
         ZigZagStrip()
             .fill(tint.opacity(0.55))
@@ -222,7 +222,7 @@ struct PaperClip: View {
     var body: some View {
         ClipWire()
             .stroke(
-                LinearGradient(colors: [Color(hex: 0xF4F5F7), Color(hex: 0x9EA3AB), Color(hex: 0xE3E5E9), Color(hex: 0x7D828B)],
+                LinearGradient(colors: Tok.Material.steel,
                                startPoint: .topLeading, endPoint: .bottomTrailing),
                 style: StrokeStyle(lineWidth: 1.9, lineCap: .round, lineJoin: .round))
             .frame(width: 16, height: 42)

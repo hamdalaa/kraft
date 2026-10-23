@@ -108,7 +108,7 @@ struct EditorMoneyFields: View {
                     .buttonStyle(.plain)
                     .help(Text("Remove payment"))
                 }
-                .foregroundStyle(Color(hex: 0x2E2A33))
+                .foregroundStyle(Tok.Card.text)
                 .transition(.opacity.combined(with: .move(edge: .top)))
             }
             if !money.isSettled {

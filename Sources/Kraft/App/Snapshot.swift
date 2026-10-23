@@ -72,7 +72,8 @@ enum Snapshot {
 
     static func write(_ view: some View, to url: URL) {
         // Language comes from `-AppleLanguages "(ar)"` (the bundle's choice); direction and formats follow it.
-        let renderer = ImageRenderer(content: view.kraftEnvironment().environment(\.colorScheme, .light))
+        // Appearance comes from `-KraftAppearance dark` (System renders light).
+        let renderer = ImageRenderer(content: view.kraftEnvironment().environment(\.colorScheme, AppPreferences.shared.snapshotScheme))
         renderer.scale = 2
         guard let image = renderer.cgImage else { NSLog("Kraft snapshot: render failed for %@", url.lastPathComponent); return }
         let rep = NSBitmapImageRep(cgImage: image)

@@ -12,7 +12,7 @@ struct HandwritingReplica: View {
         let hand = Hand(text: text)
         composed
             .font(hand.font(size))
-            .foregroundStyle(InkColor.graphite.color.opacity(0.92))
+            .foregroundStyle(Tok.Card.text.opacity(0.92))
             .lineSpacing(size * 0.3)
             .textRenderer(HighlighterRenderer())
             .frame(maxWidth: .infinity, alignment: .leading)

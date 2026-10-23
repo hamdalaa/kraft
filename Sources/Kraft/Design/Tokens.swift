@@ -1,5 +1,6 @@
-import SwiftUI
+import AppKit
 import KraftCore
+import SwiftUI
 
 extension Color {
     init(hex: UInt32, opacity: Double = 1) {
@@ -20,42 +21,96 @@ extension Color {
     }
 }
 
-/// Design tokens. Values come from DESIGN.md (sampled from the references).
+extension NSColor {
+    /// A token that resolves per appearance: light values by day, the "night desk" values in Dark.
+    static func swatch(_ s: Swatch) -> NSColor {
+        NSColor(name: nil) { appearance in
+            let dark = appearance.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua
+            let c = s.rgb(dark: dark)
+            return NSColor(srgbRed: c.red, green: c.green, blue: c.blue, alpha: s.alpha(dark: dark))
+        }
+    }
+}
+
+extension Color {
+    /// Adaptive token colour (see `Palette`). SwiftUI resolves it from the view's `colorScheme`.
+    init(_ swatch: Swatch) { self.init(nsColor: .swatch(swatch)) }
+}
+
+/// Design tokens. Values come from DESIGN.md (sampled from the references); each one adapts to Light / Dark.
+/// The numbers live in `KraftCore.Palette` so their contrast is tested.
 enum Tok {
     enum Page {
-        static let base = Color(hex: 0xFDF6E6)
-        static let hi = Color(hex: 0xFFF9E9)
+        static let base = Color(Palette.Page.base)
+        static let hi = Color(Palette.Page.hi)
     }
 
     enum Kraft {
-        static let base = Color(hex: 0xCD9059)
-        static let light = Color(hex: 0xD59862)
-        static let deep = Color(hex: 0xB87541)
-        static let ink = Color(hex: 0x744416)
-        static let tabTop = Color(hex: 0xC99059)
-        static let tabBottom = Color(hex: 0xB07440)
+        static let base = Color(Palette.Kraft.base)
+        static let light = Color(Palette.Kraft.light)
+        static let deep = Color(Palette.Kraft.deep)
+        static let ink = Color(Palette.Kraft.ink)
+        static let tabTop = Color(Palette.Kraft.tabTop)
+        static let tabBottom = Color(Palette.Kraft.tabBottom)
+        static let lamp = Color(Palette.Kraft.lamp)
+        static let vignette = Color(Palette.Kraft.vignette)
     }
 
     enum Grid {
-        static let paper = Color(hex: 0xF3EBDD)
-        static let line = Color(hex: 0xD2C9B8)
+        static let paper = Color(Palette.Grid.paper)
+        static let line = Color(Palette.Grid.line)
     }
 
     /// Sticker ink and fills (ref-6 / ref-7).
     enum Sticker {
-        static let ink = Color(hex: 0x271F2C)
-        static let sky = Color(hex: 0x68C9F6)
-        static let coral = Color(hex: 0xFBA08E)
-        static let yellow = Color(hex: 0xFFD96A)
-        static let pink = Color(hex: 0xFE93B1)
-        static let purple = Color(hex: 0xC3A7E1)
-        static let green = Color(hex: 0x94E387)
-        static let lime = Color(hex: 0xAEFF5D)
+        static let ink = Color(Palette.Sticker.ink)
+        static let border = Color(Palette.Sticker.border)
+        static let label = Color(Palette.Sticker.label)
+        static let sky = Color(Palette.Sticker.sky)
+        static let coral = Color(Palette.Sticker.coral)
+        static let yellow = Color(Palette.Sticker.yellow)
+        static let pink = Color(Palette.Sticker.pink)
+        static let purple = Color(Palette.Sticker.purple)
+        static let green = Color(Palette.Sticker.green)
+        static let lime = Color(Palette.Sticker.lime)
     }
 
     enum Stamp {
-        static let red = Color(hex: 0xE0313F)
-        static let pin = Color(hex: 0xFD2441)
+        static let red = Color(Palette.Stamp.red)
+        static let pin = Color(Palette.Stamp.pin)
+    }
+
+    /// Highlights: the lip under embossed text, top edges, the lift of ghost controls.
+    enum Light {
+        static let emboss = Color(Palette.Light.emboss)
+        static let edge = Color(Palette.Light.edge)
+        static let lift = Color(Palette.Light.lift)
+    }
+
+    enum Shadow {
+        static let board = Color(Palette.Shadow.board)
+        static let card = Color(Palette.Shadow.card)
+    }
+
+    enum Card {
+        static let top = Color(Palette.Card.top)
+        static let bottom = Color(Palette.Card.bottom)
+        static let rim = Color(Palette.Card.rim)
+        static let edge = Color(Palette.Card.edge)
+        static let slip = Color(Palette.Card.slip)
+        static let slipEdge = Color(Palette.Card.slipEdge)
+        static let text = Color(Palette.Card.text)
+        static let example = Color(Palette.Card.example)
+    }
+
+    enum Material {
+        static let ruling = Color(Palette.Material.ruling)
+        static let steel = Palette.Material.steel.map(Color.init)
+    }
+
+    enum Tape {
+        static let plain = Color(Palette.Tape.plain)
+        static let slipEdge = Color(Palette.Tape.slipEdge)
     }
 
     enum Space {
@@ -65,17 +120,22 @@ enum Tok {
 }
 
 extension PaperColor {
-    func color(customHex: String?) -> Color {
+    var swatch: Swatch {
         switch self {
-        case .lemon: Color(hex: 0xFFF1A8)
-        case .mint: Color(hex: 0xDDF6D2)
-        case .sky: Color(hex: 0xD8EEFC)
-        case .pink: Color(hex: 0xFFDDE8)
-        case .peach: Color(hex: 0xFFE2CF)
-        case .lilac: Color(hex: 0xE9E0FA)
-        case .white: Color(hex: 0xFFFDF6)
-        case .custom: customHex.flatMap { Color(hexString: $0) } ?? Color(hex: 0xFFF1A8)
+        case .lemon, .custom: Palette.Paper.lemon
+        case .mint: Palette.Paper.mint
+        case .sky: Palette.Paper.sky
+        case .pink: Palette.Paper.pink
+        case .peach: Palette.Paper.peach
+        case .lilac: Palette.Paper.lilac
+        case .white: Palette.Paper.white
         }
+    }
+
+    /// The paper colour; lamplit at night. Custom colours dim the same way.
+    func color(customHex: String?) -> Color {
+        if self == .custom, let rgb = customHex.flatMap(RGB.init(hexString:)) { return Color(.paper(rgb.hex)) }
+        return Color(swatch)
     }
 }
 

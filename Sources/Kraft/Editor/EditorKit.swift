@@ -27,11 +27,6 @@ struct StickyEditing {
     }
 }
 
-/// Neutral "paper" tag for unselected choices; selected choices take a kit tint.
-extension TagTint {
-    static let paper = TagTint(top: Color(hex: 0xFFFDF8), bottom: Color(hex: 0xF5EEDF), edge: Color(hex: 0xDCCDB3), ink: Color(hex: 0x86704F))
-}
-
 /// A glossy choice tag (ref-5): paper when off, tinted when on.
 struct EditorChip: View {
     let title: LocalizedStringResource
@@ -73,12 +68,12 @@ struct EditorLabel: View {
             .textCase(.uppercase)
             .tracking(0.8)
             .foregroundStyle(Tok.Kraft.ink.opacity(0.62))
-            .shadow(color: .white.opacity(0.8), radius: 0, y: 1)
+            .shadow(color: Tok.Light.emboss.opacity(0.8), radius: 0, y: 1)
             .accessibilityAddTraits(.isHeader)
     }
 }
 
-/// A white paper slip that holds a native field, with an optional leading SF Symbol.
+/// A white paper slip (a dark inset well at night) that holds a native field, with an optional leading SF Symbol.
 struct EditorSlip<Content: View>: View {
     var symbol: String?
     @ViewBuilder var content: Content
@@ -95,13 +90,13 @@ struct EditorSlip<Content: View>: View {
             content
                 .textFieldStyle(.plain)
                 .font(.system(size: 13))
-                .foregroundStyle(Color(hex: 0x2E2A33))
+                .foregroundStyle(Tok.Card.text)
         }
         .padding(.horizontal, 9)
         .frame(minHeight: 30)
         .background {
-            shape.fill(Color.white.opacity(0.92))
-                .overlay { shape.strokeBorder(Color(hex: 0xE2D5BE), lineWidth: 1) }
+            shape.fill(Tok.Card.slip)
+                .overlay { shape.strokeBorder(Tok.Card.slipEdge, lineWidth: 1) }
                 .overlay {
                     // Pressed-in: a faint shade under the top edge.
                     shape.inset(by: 1).strokeBorder(LinearGradient(colors: [.black.opacity(0.07), .clear],
@@ -132,14 +127,14 @@ struct EditorCardBackground: View {
     var body: some View {
         let shape = RoundedRectangle(cornerRadius: 16, style: .continuous)
         ZStack {
-            shape.fill(LinearGradient(colors: [Tok.Page.hi, Tok.Page.base], startPoint: .top, endPoint: .bottom))
-            GrainOverlay(image: Grain.paper, opacity: 0.3).blendMode(.multiply).clipShape(shape)
-            shape.strokeBorder(Color(hex: 0xE6D7BC), lineWidth: 1)
-            shape.inset(by: 1).strokeBorder(LinearGradient(colors: [.white.opacity(0.9), .clear], startPoint: .top, endPoint: .center), lineWidth: 1)
+            shape.fill(LinearGradient(colors: [Tok.Card.top, Tok.Card.bottom], startPoint: .top, endPoint: .bottom))
+            GrainOverlay(image: Grain.paper, opacity: 0.3).surfaceGrain().clipShape(shape)
+            shape.strokeBorder(Tok.Card.edge, lineWidth: 1)
+            shape.inset(by: 1).strokeBorder(LinearGradient(colors: [Tok.Light.edge.opacity(0.9), .clear], startPoint: .top, endPoint: .center), lineWidth: 1)
         }
         .compositingGroup()
         .shadow(color: .black.opacity(0.12), radius: 1, y: 1)
-        .shadow(color: Tok.Kraft.ink.opacity(0.28), radius: 24, y: 14)
+        .shadow(color: Tok.Shadow.card, radius: 24, y: 14)
     }
 }
 

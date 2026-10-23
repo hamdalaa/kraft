@@ -13,6 +13,7 @@
 "All settled" = "All settled";
 "Amount" = "Amount";
 "Amount paid" = "Amount paid";
+"Appearance" = "Appearance";
 "Arabic digits" = "Arabic digits";
 "Arabic ١٢٣" = "Arabic ١٢٣";
 "Auto" = "Auto";
@@ -46,6 +47,7 @@
 "Copy" = "Copy";
 "Custom colour" = "Custom colour";
 "Daily" = "Daily";
+"Dark" = "Dark";
 "Day" = "Day";
 "day %@" = "day %@";
 "Delete" = "Delete";
@@ -91,6 +93,7 @@
 "left of %@ · %@ back" = "left of %@ · %@ back";
 "Lemon" = "Lemon";
 "Let go" = "Let go";
+"Light" = "Light";
 "Lilac" = "Lilac";
 "Lines" = "Lines";
 "List name" = "List name";
@@ -173,6 +176,7 @@
 "Stickies" = "Stickies";
 "Straight" = "Straight";
 "System" = "System";
+"System follows the appearance of your Mac." = "System follows the appearance of your Mac.";
 "System follows the language of your Mac." = "System follows the language of your Mac.";
 "tab.done" = "Done";
 "Tape" = "Tape";

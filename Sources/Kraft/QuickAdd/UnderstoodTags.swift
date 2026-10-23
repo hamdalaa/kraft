@@ -114,7 +114,6 @@ struct UnderstoodTagRow: View {
                     .help(tag.isGhost ? Text("Add") : Text("Change"))
                     .popover(isPresented: isOpen(tag.field), arrowEdge: .bottom) {
                         TagEditor(field: tag.field, parsed: parsed, model: model) { open = nil }
-                            .preferredColorScheme(.light)
                     }
                     .transition(.scale(scale: 0.85).combined(with: .opacity))
                 }
@@ -144,7 +143,7 @@ struct TagButtonStyle: ButtonStyle {
             configuration.label
                 .padding(.horizontal, TagSize.regular.padding)
                 .frame(height: TagSize.regular.height)
-                .background(shape.fill(.white.opacity(configuration.isPressed ? 0.5 : 0.28)))
+                .background(shape.fill(Tok.Light.lift.opacity(configuration.isPressed ? 0.5 : 0.28)))
                 .overlay(shape.strokeBorder(Tok.Kraft.ink.opacity(0.32), style: StrokeStyle(lineWidth: 1, dash: [3.5, 2.5])))
                 .scaleEffect(configuration.isPressed ? 0.97 : 1)
                 .contentShape(shape)

@@ -11,6 +11,9 @@ extension Snapshot {
         let changed = AppPreferences(defaults: defaults)
         changed.language = fresh.runningLanguage == "ar" ? .english : .arabic
         changed.digits = .arabic
+        // Show the appearance being rendered as the chosen one.
+        fresh.appearance = AppPreferences.shared.appearance
+        changed.appearance = AppPreferences.shared.appearance
         defaults.removePersistentDomain(forName: suite)
         return [
             ("settings", AnyView(SettingsView().kraftEnvironment(fresh))),

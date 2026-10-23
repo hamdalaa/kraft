@@ -2,7 +2,8 @@
 
 One page. Every colour below was sampled (region medians) from a private four-image mood board — glossy pastel tags,
 die-cut sticker icons and a kraft-paper folder collage — except where marked *derived*. The references themselves are not
-included because they are other artists' work. Code tokens live in `Sources/Kraft/Design/Tokens.swift`.
+included because they are other artists' work. Values live in `Sources/KraftCore/Appearance/Palette.swift`
+(light + dark, contrast-tested); views read them through `Tok` in `Sources/Kraft/Design/Tokens.swift`.
 
 ## Surfaces (ref-8: kraft folder collage)
 | Token | Hex | Use |
@@ -66,3 +67,28 @@ Chosen by the first strong character of the text. Title 22 · body 16 · amount 
 
 ## Motion
 Hover lifts a sticky (scale 1.02, tilt eases toward 0, shadow deepens) on a 0.35 s spring. No decorative animation.
+
+## Dark — "night desk"
+The same stationery desk at night under a warm lamp. Settings › Appearance = System / Light / Dark (`NSApp.appearance`,
+so desktop stickies, the ⌥Space panel, popovers and menus follow). Every token is a light/dark pair; light is unchanged.
+| Token | Dark | Note |
+|---|---|---|
+| page / page.hi | `#1A140F` / `#231B15` | warm brown-black, never pure black or grey |
+| kraft / kraft.light / kraft.deep | `#4C311B` / `#55371F` / `#2E1C0E` | tobacco kraft; grain laid on plainly so pale fibres show |
+| kraft.ink | `#FCEBD0` | cream; text lip becomes a dark letterpress shadow (`#0B0705` 60 %) |
+| tabs | `#452D19 → #332010` | |
+| lamp pool / vignette | `#FFAE5C` 13 % / `#0E0805` 72 % | the vignette does most of the "lamp" work, keeping header text ≥ 4.5:1 |
+| card stock (editor, settings, quick add) | `#30251D → #271E17` | a step above the page so cards rise; slips are dark wells `#140F0B` 55 % |
+| grid sheet | `#3B322A`, lines `#564A3E` | |
+Papers stay pastel, lamplit: mixed 10 % toward `#2A1E14` (custom colours too). Ink and handwriting on paper are unchanged.
+Glossy tags: deep tinted glass, brighter same-hue ink, sheen and bevel at ~⅓ strength.
+| Tint | top | bottom | edge | ink |
+|---|---|---|---|---|
+| blue | `#27456A` | `#1D3654` | `#4876A8` | `#A7D0FF` |
+| lime | `#3C4914` | `#2F3A0D` | `#6A7E22` | `#D8F45E` |
+| mint | `#1E4B37` | `#163C2C` | `#3D8463` | `#93EDBE` |
+| pink | `#5A2540` | `#481C33` | `#974468` | `#FFADCD` |
+| amber | `#5A421B` | `#4A3513` | `#9A7430` | `#FFD47E` |
+| paper | `#3A2E25` | `#30261E` | `#5A493B` | `#DCC6A6` |
+Die-cut stickers keep their fills; the die-cut border warms to `#F6ECDD`. Stamp, pin, clip, bin keep their colours.
+UI text contrast ≥ 4.5:1 is enforced by `AppearanceTests`. Check with `./scripts/snapshots.sh` → `snapshots/{en,ar}-dark/`.

@@ -9,7 +9,8 @@ The owner writes English and Arabic. Visual identity is the most important part:
 - Visual check: `KRAFT_SNAPSHOT=$PWD/snapshots build/Kraft.app/Contents/MacOS/Kraft -ApplePersistenceIgnoreState YES`
   writes PNGs and quits. Add your own shots in your area's `Snapshot+<Area>.swift`. Then Read the PNGs.
   Offscreen renders can't draw system materials / Liquid Glass. Avoid `.blendMode(.softLight)` on large layers (dithers).
-- `./scripts/snapshots.sh` renders every shot in English (`snapshots/en/`) and Arabic RTL (`snapshots/ar/`).
+- `./scripts/snapshots.sh` renders every shot in English and Arabic RTL, light and dark (`snapshots/{en,ar,en-dark,ar-dark}/`).
+  One appearance: add `-KraftAppearance dark` to the snapshot command.
 - Never `pkill Kraft` / `killall Kraft` — other sessions run their own builds. If you launch yours, kill it by PID.
 
 ## Design rules
@@ -18,7 +19,7 @@ The owner writes English and Arabic. Visual identity is the most important part:
   `PaperSurface`, `StickyCard`, `WashiTape`, `PushPin`, `PaperClip`, `PaidStamp`, `GrainOverlay`. Extend them, don't fork them.
 - No grey default-looking controls where a kit piece fits; no gradient blobs, generic cards or "AI slop". Native macOS behaviour
   (menus, shortcuts, sheets, popovers, ⌘Z) is welcome. Calm motion only; respect Reduce Motion (`Motion.enabled`, `accessibilityReduceMotion`).
-- Light appearance first.
+- Light appearance first; Dark ("night desk", DESIGN.md) must stay coherent. Colours only through `Tok` (pairs in `KraftCore/Palette`).
 
 ## Code rules
 - All data flows through `StickyStore` (`add`, `update(_:actionName:coalesce:)`, `delete`, `toggleChecklistItem`, `setDone`).

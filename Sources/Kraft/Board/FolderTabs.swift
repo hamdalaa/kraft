@@ -70,7 +70,7 @@ private struct FolderTabButton: View {
                 }
             }
             .foregroundStyle(Tok.Kraft.ink.opacity(isActive ? 1 : 0.78))
-            .shadow(color: .white.opacity(isActive ? 0.32 : 0.2), radius: 0, y: 1)
+            .shadow(color: Tok.Light.emboss.opacity(isActive ? 0.32 : 0.2), radius: 0, y: 1)
             .padding(.leading, 12)
             .padding(.trailing, 16)
             .frame(height: isActive ? 38 : 33)
@@ -90,10 +90,10 @@ private struct FolderTabButton: View {
         if isActive {
             ZStack {
                 FolderTabShape(flare: Self.flare).fill(Tok.Kraft.light)
-                GrainOverlay(image: Grain.kraft, opacity: 0.5).blendMode(.multiply).clipShape(FolderTabShape(flare: Self.flare))
+                GrainOverlay(image: Grain.kraft, opacity: 0.5).surfaceGrain().clipShape(FolderTabShape(flare: Self.flare))
                 FolderTabShape(flare: Self.flare, closed: false).stroke(Tok.Kraft.deep.opacity(0.7), lineWidth: 1)
                 FolderTabShape(flare: Self.flare, closed: false)
-                    .stroke(.white.opacity(0.28), lineWidth: 1)
+                    .stroke(Tok.Light.edge.opacity(0.28), lineWidth: 1)
                     .offset(y: 1)
                     .mask(LinearGradient(colors: [.white, .clear], startPoint: .top, endPoint: .bottom))
             }
@@ -102,7 +102,7 @@ private struct FolderTabButton: View {
         } else {
             ZStack {
                 FolderTabShape().fill(LinearGradient(colors: [Tok.Kraft.tabTop, Tok.Kraft.tabBottom], startPoint: .top, endPoint: .bottom))
-                GrainOverlay(image: Grain.kraft, opacity: 0.45).blendMode(.multiply).clipShape(FolderTabShape())
+                GrainOverlay(image: Grain.kraft, opacity: 0.45).surfaceGrain().clipShape(FolderTabShape())
                 FolderTabShape(closed: false).stroke(Tok.Kraft.deep.opacity(0.8), lineWidth: 1)
                 // Shade where the tab tucks behind the front folder.
                 LinearGradient(colors: [.black.opacity(0), .black.opacity(0.12)], startPoint: .center, endPoint: .bottom)

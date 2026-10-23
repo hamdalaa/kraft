@@ -1,7 +1,7 @@
 import KraftCore
 import SwiftUI
 
-/// ⌘, — a card of page stock taped to the warm page: language and digits, as glossy choice tags.
+/// ⌘, — a card of page stock taped to the warm page: appearance, language and digits, as glossy choice tags.
 struct SettingsView: View {
     @Environment(AppPreferences.self) private var preferences
     @Environment(\.kraftFormat) private var format
@@ -16,10 +16,12 @@ struct SettingsView: View {
                 Text("Settings")
                     .font(.system(size: 22, weight: .bold))
                     .foregroundStyle(Tok.Kraft.ink.opacity(0.92))
-                    .shadow(color: .white.opacity(0.8), radius: 0, y: 1)
+                    .shadow(color: Tok.Light.emboss.opacity(0.8), radius: 0, y: 1)
             }
             .padding(.bottom, 2)
 
+            appearance
+            EditorPerforation()
             language
             EditorPerforation()
             digits
@@ -36,6 +38,22 @@ struct SettingsView: View {
         .padding(28)
         .background(PageBackground())
         .animation(Motion.enabled ? .spring(duration: 0.3) : nil, value: preferences.needsRelaunch)
+    }
+
+    private var appearance: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            EditorLabel("Appearance")
+            HStack(spacing: 8) {
+                ForEach(AppAppearance.allCases, id: \.self) { choice in
+                    SettingsChoice(title: title(choice), isOn: preferences.appearance == choice, tint: .mint) {
+                        preferences.appearance = choice
+                    }
+                }
+            }
+            Text("System follows the appearance of your Mac.")
+                .font(.system(size: 12.5))
+                .foregroundStyle(Tok.Kraft.ink.opacity(0.62))
+        }
     }
 
     private var language: some View {
@@ -95,6 +113,14 @@ struct SettingsView: View {
 
     private static var nineAM: Date {
         Calendar.current.date(bySettingHour: 9, minute: 30, second: 0, of: Date()) ?? Date()
+    }
+
+    private func title(_ choice: AppAppearance) -> String {
+        switch choice {
+        case .system: String(localized: "System")
+        case .light: String(localized: "Light")
+        case .dark: String(localized: "Dark")
+        }
     }
 
     /// Language names stay in their own script, as on every Mac.
