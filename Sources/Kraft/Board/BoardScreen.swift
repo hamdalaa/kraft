@@ -165,6 +165,14 @@ struct BoardScreen: View {
                     .matchedGeometryEffect(id: sticky.id, in: stickyNamespace, isSource: model.editingID != sticky.id)
                     .opacity(model.editingID == sticky.id || thrower.isCarrying(sticky.id) ? 0 : 1)
                     .onTapGesture { model.open(sticky.id) }
+                    // VoiceOver: a sticky is a button that opens it; throwing away has its own action.
+                    .accessibilityLabel(Text(verbatim: sticky.primaryText))
+                    .accessibilityAddTraits(.isButton)
+                    .accessibilityAction { model.open(sticky.id) }
+                    .accessibilityAction(named: Text("Open Sticky")) { model.open(sticky.id) }
+                    .accessibilityAction(named: Text("Throw Away")) {
+                        withAnimation(.spring(duration: 0.5, bounce: 0.2)) { model.store.delete(sticky.id) }
+                    }
                     .contextMenu { DesktopPinButton(sticky: sticky, store: model.store) }
                     .transition(.opacity)
             }

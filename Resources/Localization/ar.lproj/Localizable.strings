@@ -226,3 +226,5 @@
 "count.items.few" = "%@ بنود";
 "count.items.many" = "%@ بندًا";
 "count.items.other" = "%@ بند";
+"Open Sticky" = "فتح الملصق";
+"Throw Away" = "رمي في السلة";

@@ -226,3 +226,5 @@
 "count.items.few" = "%@ items";
 "count.items.many" = "%@ items";
 "count.items.other" = "%@ items";
+"Open Sticky" = "Open Sticky";
+"Throw Away" = "Throw Away";
