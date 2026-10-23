@@ -38,7 +38,11 @@ Text + SF Symbol in the same hue, embossed (white 1 pt highlight below).
 | amber *derived* | `#FFF2CC` | `#FFE7A6` | `#E8C774` | `#B07C12` |
 Sizes: regular 30 pt (13 pt label), mini 22 pt (11 pt label). Pressed: scale 0.97, fill darkens 4 %.
 
-## Die-cut stickers — kind icons, empty states, app icon (ref-6, ref-7)
+## App icon
+The designer's own artwork, not drawn in code: a lined note page with a curled corner on a dark slab
+(`Resources/AppIcon-1024.png`, macOS grid: 824/1024 tile, 100 px margins, soft drop shadow → `scripts/make-icon.sh`).
+
+## Die-cut stickers — kind icons, empty states (ref-6, ref-7)
 Bold SF Symbol in ink `#271F2C`, over a flat colour blob that follows the glyph silhouette (dilated 20 %),
 over a white die-cut outline (dilated 34 %), offset shadow `ink 22% x1.5 y2.5`, rotated −6…−10°.
 | Kind | Symbol | Fill |

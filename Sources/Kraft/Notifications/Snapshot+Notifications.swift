@@ -2,7 +2,7 @@ import SwiftUI
 
 extension Snapshot {
     /// Offscreen renders for this area: (file name without extension, view). Owned by the Notifications session.
-    /// `appicon-1024` is the source for `scripts/make-icon.sh`: 512 pt @2x = 1024 px, transparent outside the tile.
+    /// `appicon-1024` renders the shipped icon (512 pt @2x = 1024 px) to check it; its source is `Resources/AppIcon-1024.png`.
     static func notificationsShots() -> [(String, AnyView)] {
         [
             ("appicon-1024", AnyView(AppIconArt())),
