@@ -1,3 +1,4 @@
+import KraftCore
 import SwiftUI
 
 /// Glossy, embossed pastel tag (ref-5). Used for buttons, filters and chips.
@@ -7,11 +8,24 @@ struct TagTint: Sendable {
     let edge: Color
     let ink: Color
 
-    static let blue = TagTint(top: Color(hex: 0xDCEFFE), bottom: Color(hex: 0xCFE9FF), edge: Color(hex: 0x93C3F3), ink: Color(hex: 0x5390E0))
-    static let lime = TagTint(top: Color(hex: 0xEEFF8D), bottom: Color(hex: 0xE4F86A), edge: Color(hex: 0xC4D698), ink: Color(hex: 0x7A9D0F))
-    static let mint = TagTint(top: Color(hex: 0xD7FCDD), bottom: Color(hex: 0xC6F5CE), edge: Color(hex: 0xA3E3AF), ink: Color(hex: 0x27A274))
-    static let pink = TagTint(top: Color(hex: 0xFFE3EE), bottom: Color(hex: 0xFFD3E3), edge: Color(hex: 0xF2A7C3), ink: Color(hex: 0xD4497F))
-    static let amber = TagTint(top: Color(hex: 0xFFF2CC), bottom: Color(hex: 0xFFE7A6), edge: Color(hex: 0xE8C774), ink: Color(hex: 0xB07C12))
+    init(top: Color, bottom: Color, edge: Color, ink: Color) {
+        self.top = top
+        self.bottom = bottom
+        self.edge = edge
+        self.ink = ink
+    }
+
+    init(_ tint: Palette.Tint) {
+        self.init(top: Color(tint.top), bottom: Color(tint.bottom), edge: Color(tint.edge), ink: Color(tint.ink))
+    }
+
+    static let blue = TagTint(Palette.Tint.blue)
+    static let lime = TagTint(Palette.Tint.lime)
+    static let mint = TagTint(Palette.Tint.mint)
+    static let pink = TagTint(Palette.Tint.pink)
+    static let amber = TagTint(Palette.Tint.amber)
+    /// Neutral "paper" tag for unselected choices; selected choices take a kit tint.
+    static let paper = TagTint(Palette.Tint.paper)
 }
 
 enum TagSize {
@@ -34,16 +48,16 @@ struct GlossyTagBackground: View {
             .overlay {
                 // Soft sheen on the upper half.
                 shape.fill(LinearGradient(stops: [
-                    .init(color: .white.opacity(0.45), location: 0),
-                    .init(color: .white.opacity(0), location: 0.5),
+                    .init(color: Tok.Light.edge.opacity(0.45), location: 0),
+                    .init(color: Tok.Light.edge.opacity(0), location: 0.5),
                 ], startPoint: .top, endPoint: .bottom))
             }
             .overlay { shape.strokeBorder(tint.edge, lineWidth: 1) }
             .overlay {
                 // Inner bevel: bright top lip, faint shade at the bottom lip.
                 shape.inset(by: 1).strokeBorder(LinearGradient(stops: [
-                    .init(color: .white.opacity(0.95), location: 0),
-                    .init(color: .white.opacity(0), location: 0.45),
+                    .init(color: Tok.Light.edge.opacity(0.95), location: 0),
+                    .init(color: Tok.Light.edge.opacity(0), location: 0.45),
                     .init(color: tint.edge.opacity(0), location: 0.7),
                     .init(color: tint.edge.opacity(0.55), location: 1),
                 ], startPoint: .top, endPoint: .bottom), lineWidth: 1.2)
@@ -54,7 +68,7 @@ struct GlossyTagBackground: View {
     }
 }
 
-/// Same-hue embossed label: ink with a 1 pt white highlight under it.
+/// Same-hue embossed label: ink with a 1 pt lip under it (white by day, a dark letterpress lip at night).
 struct EmbossedLabel: View {
     let text: String
     var symbol: String?
@@ -69,7 +83,7 @@ struct EmbossedLabel: View {
             Text(text).font(.system(size: size.font, weight: .semibold))
         }
         .foregroundStyle(LinearGradient(colors: [tint.ink.mix(with: .black, by: 0.08), tint.ink], startPoint: .top, endPoint: .bottom))
-        .shadow(color: .white.opacity(0.9), radius: 0, y: 1)
+        .shadow(color: Tok.Light.emboss.opacity(0.9), radius: 0, y: 1)
         .lineLimit(1)
     }
 }

@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Die-cut sticker (ref-6 / ref-7): bold ink glyph on a colour blob that follows its silhouette,
-/// a white die-cut border, and a soft offset shadow. The blob and border are built by dilating the
+/// a white die-cut border (a touch warmer at night), and a soft offset shadow. The blob and border are built by dilating the
 /// glyph (stamping copies around a circle), so any SF Symbol becomes a sticker.
 struct DieCutSticker: View {
     let art: StickerArt
@@ -11,7 +11,7 @@ struct DieCutSticker: View {
     var body: some View {
         let glyph = Image(systemName: art.symbol).font(.system(size: size, weight: .bold))
         ZStack {
-            Dilated(content: glyph, color: .white, radius: size * 0.34)
+            Dilated(content: glyph, color: Tok.Sticker.border, radius: size * 0.34)
             Dilated(content: glyph, color: art.fill, radius: size * 0.2)
             glyph.foregroundStyle(Tok.Sticker.ink)
         }

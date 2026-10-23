@@ -13,6 +13,7 @@
 "All settled" = "سُدِّد بالكامل";
 "Amount" = "المبلغ";
 "Amount paid" = "المبلغ المدفوع";
+"Appearance" = "المظهر";
 "Arabic digits" = "أرقام مشرقية";
 "Arabic ١٢٣" = "مشرقية ١٢٣";
 "Auto" = "تلقائي";
@@ -46,6 +47,7 @@
 "Copy" = "نسخ";
 "Custom colour" = "لون مخصّص";
 "Daily" = "يوميًا";
+"Dark" = "داكن";
 "Day" = "التاريخ";
 "day %@" = "يوم %@";
 "Delete" = "حذف";
@@ -91,6 +93,7 @@
 "left of %@ · %@ back" = "متبقٍّ من %1$@ · عاد %2$@";
 "Lemon" = "ليموني";
 "Let go" = "إفلات";
+"Light" = "فاتح";
 "Lilac" = "ليلكي";
 "Lines" = "أسطر";
 "List name" = "اسم القائمة";
@@ -173,6 +176,7 @@
 "Stickies" = "الملصقات";
 "Straight" = "مستقيم";
 "System" = "النظام";
+"System follows the appearance of your Mac." = "خيار «النظام» يتبع مظهر جهاز Mac.";
 "System follows the language of your Mac." = "خيار «النظام» يتبع لغة جهاز Mac.";
 "tab.done" = "المنجزة";
 "Tape" = "شريط";

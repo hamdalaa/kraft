@@ -50,9 +50,11 @@ extension Snapshot {
 @MainActor
 enum EditorCapture {
     static func image(_ view: some View) -> some View {
-        let host = NSHostingView(rootView: view.kraftEnvironment().environment(\.colorScheme, .light))
+        let scheme = AppPreferences.shared.snapshotScheme
+        let host = NSHostingView(rootView: view.kraftEnvironment().environment(\.colorScheme, scheme))
         let size = host.fittingSize
         let window = NSWindow(contentRect: NSRect(origin: .zero, size: size), styleMask: [.borderless], backing: .buffered, defer: false)
+        window.appearance = NSAppearance(named: scheme == .dark ? .darkAqua : .aqua)
         window.contentView = host
         host.frame = NSRect(origin: .zero, size: size)
         host.layoutSubtreeIfNeeded()

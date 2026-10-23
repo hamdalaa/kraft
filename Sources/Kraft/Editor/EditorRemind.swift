@@ -82,7 +82,7 @@ struct EditorRemindPopover: View {
                 let shape = RoundedRectangle(cornerRadius: 6, style: .continuous)
                 shape.fill(PaperColor.white.color(customHex: nil))
                     .overlay { GrainOverlay(image: Grain.paper, opacity: 0.3).blendMode(.multiply).clipShape(shape) }
-                    .overlay { shape.strokeBorder(Color(hex: 0xE6D7BC), lineWidth: 1) }
+                    .overlay { shape.strokeBorder(Tok.Tape.slipEdge, lineWidth: 1) }
                     .shadow(color: .black.opacity(0.08), radius: 2, y: 1)
             }
             .accessibilityLabel(Text("Message"))

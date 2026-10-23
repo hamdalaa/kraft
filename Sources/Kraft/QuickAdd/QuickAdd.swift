@@ -60,7 +60,7 @@ struct QuickAddView: View {
         .clipShape(RoundedRectangle(cornerRadius: presentation == .panel ? 16 : 0, style: .continuous))
         .overlay {
             if presentation == .panel {
-                RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(.black.opacity(0.10), lineWidth: 0.5)
+                RoundedRectangle(cornerRadius: 16, style: .continuous).strokeBorder(Tok.Card.rim, lineWidth: 0.5)
             }
         }
     }
@@ -162,8 +162,8 @@ private struct ExampleLines: View {
                     Button { use(example) } label: {
                         Text(example)
                             .font(Hand(text: example).font(15))
-                            .foregroundStyle(InkColor.blue.color.opacity(0.7))
-                            .underline(pattern: .dot, color: InkColor.blue.color.opacity(0.35))
+                            .foregroundStyle(Tok.Card.example.opacity(0.7))
+                            .underline(pattern: .dot, color: Tok.Card.example.opacity(0.35))
                             .environment(\.layoutDirection, Hand(text: example).layoutDirection)
                     }
                     .buttonStyle(.plain)
@@ -188,7 +188,7 @@ private struct KeyHint: View {
             .font(.system(size: 9, weight: .bold))
             .padding(.horizontal, 4)
             .frame(height: 16)
-            .background(RoundedRectangle(cornerRadius: 4, style: .continuous).fill(.white.opacity(0.7)))
+            .background(RoundedRectangle(cornerRadius: 4, style: .continuous).fill(Tok.Light.lift.opacity(0.7)))
             .overlay(RoundedRectangle(cornerRadius: 4, style: .continuous).strokeBorder(Tok.Grid.line, lineWidth: 0.8))
             Text(text).font(.system(size: 11, weight: .medium))
         }

@@ -29,7 +29,6 @@ struct DesktopStickyView: View {
             .onHover { hovering = $0 }
             .animation(reduceMotion ? nil : .spring(duration: 0.35), value: state.isDragging || hovering)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .environment(\.colorScheme, .light)
         }
     }
 }

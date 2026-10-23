@@ -15,8 +15,8 @@ struct WasteBin: View {
     var body: some View {
         ZStack(alignment: .top) {
             // White die-cut border + offset shadow, from the silhouette.
-            BinSilhouette().fill(.white)
-                .overlay { BinSilhouette().stroke(.white, style: StrokeStyle(lineWidth: 12, lineJoin: .round)) }
+            BinSilhouette().fill(Tok.Sticker.border)
+                .overlay { BinSilhouette().stroke(Tok.Sticker.border, style: StrokeStyle(lineWidth: 12, lineJoin: .round)) }
                 .shadow(color: Tok.Sticker.ink.opacity(0.22), radius: 0.6, x: 3, y: 4)
                 .shadow(color: .black.opacity(0.12), radius: 5, y: 4)
             BinMouth().fill(Tok.Sticker.sky.mix(with: Tok.Sticker.ink, by: 0.5))

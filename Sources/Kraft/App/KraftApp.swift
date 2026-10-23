@@ -44,6 +44,7 @@ struct KraftApp: App {
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillFinishLaunching(_ notification: Notification) {
+        MainActor.assumeIsolated { AppPreferences.shared.applyAppearance() }
         if let dir = ProcessInfo.processInfo.environment["KRAFT_SNAPSHOT"] {
             MainActor.assumeIsolated {
                 FontRegistry.registerAll()

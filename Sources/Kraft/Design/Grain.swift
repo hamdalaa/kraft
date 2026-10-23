@@ -38,6 +38,24 @@ enum Grain {
     }
 }
 
+extension View {
+    /// Grain on page stock and kraft: multiplied by day; laid on plainly at night, where multiply would vanish
+    /// into the dark stock and the pale fibres need to show.
+    func surfaceGrain() -> some View { modifier(SurfaceGrainBlend()) }
+}
+
+private struct SurfaceGrainBlend: ViewModifier {
+    @Environment(\.colorScheme) private var scheme
+
+    func body(content: Content) -> some View {
+        if scheme == .dark {
+            content
+        } else {
+            content.blendMode(.multiply)
+        }
+    }
+}
+
 struct GrainOverlay: View {
     let image: NSImage
     var opacity: Double

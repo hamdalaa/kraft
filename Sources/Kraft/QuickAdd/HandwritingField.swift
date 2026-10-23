@@ -53,7 +53,7 @@ struct HandwritingField: NSViewRepresentable {
         tv.autoresizingMask = [.width]
         tv.minSize = .zero
         tv.maxSize = NSSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
-        tv.insertionPointColor = NSColor(InkColor.graphite.color)
+        tv.insertionPointColor = .swatch(Palette.Card.text)
         tv.setAccessibilityLabel(String(localized: "New sticky"))
         tv.string = text
         scroll.documentView = tv
@@ -69,7 +69,7 @@ struct HandwritingField: NSViewRepresentable {
             tv.setSelectedRange(NSRange(location: (text as NSString).length, length: 0))
         }
         context.coordinator.restyle(tv, force: false)
-        context.coordinator.mark(tv)
+        context.coordinator.mark(tv, in: context.environment)
     }
 
     func sizeThatFits(_ proposal: ProposedViewSize, nsView: NSScrollView, context: Context) -> CGSize? {
@@ -132,7 +132,8 @@ struct HandwritingField: NSViewRepresentable {
             tv.baseWritingDirection = dir == .rightToLeft ? .rightToLeft : .leftToRight
         }
 
-        func mark(_ tv: NSTextView) {
+        /// Marks resolve against the field's appearance (the highlighter is a deeper wash at night).
+        func mark(_ tv: NSTextView, in environment: EnvironmentValues) {
             guard let lm = tv.layoutManager, !tv.hasMarkedText() else { return }
             let full = NSRange(location: 0, length: (tv.string as NSString).length)
             lm.removeTemporaryAttribute(.backgroundColor, forCharacterRange: full)
@@ -140,7 +141,7 @@ struct HandwritingField: NSViewRepresentable {
             for m in parent.marks {
                 let r = NSRange(m.range, in: tv.string)
                 guard NSMaxRange(r) <= full.length else { continue }
-                lm.addTemporaryAttribute(.backgroundColor, value: NSColor(m.color), forCharacterRange: r)
+                lm.addTemporaryAttribute(.backgroundColor, value: NSColor(Color(m.color.resolve(in: environment))), forCharacterRange: r)
             }
         }
 
@@ -151,7 +152,7 @@ struct HandwritingField: NSViewRepresentable {
             p.minimumLineHeight = lineHeight
             p.maximumLineHeight = lineHeight
             return [.font: HandFont.nsFont(dir, size: size), .paragraphStyle: p,
-                    .foregroundColor: NSColor(InkColor.graphite.color.opacity(0.92))]
+                    .foregroundColor: NSColor.swatch(Palette.Card.text.opacity(0.92))]
         }
     }
 }

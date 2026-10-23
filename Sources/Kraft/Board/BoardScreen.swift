@@ -111,7 +111,7 @@ struct BoardScreen: View {
                     Text(model.tab.heading)
                         .font(.system(size: 30, weight: .bold))
                         .foregroundStyle(Tok.Kraft.ink.opacity(0.92))
-                        .shadow(color: .white.opacity(0.3), radius: 0, y: 1)
+                        .shadow(color: Tok.Light.emboss.opacity(0.3), radius: 0, y: 1)
                         .contentTransition(.opacity)
                     DateLabel(date: Date())
                 }
@@ -272,7 +272,7 @@ struct PageBackground: View {
     var body: some View {
         ZStack {
             LinearGradient(colors: [Tok.Page.hi, Tok.Page.base], startPoint: .top, endPoint: .bottom)
-            GrainOverlay(image: Grain.paper, opacity: 0.18).blendMode(.multiply)
+            GrainOverlay(image: Grain.paper, opacity: 0.18).surfaceGrain()
         }
         .compositingGroup()
         .ignoresSafeArea()
@@ -294,18 +294,18 @@ struct BoardSurface<Content: View>: View {
                         .init(color: Tok.Kraft.base, location: 0.45),
                         .init(color: Tok.Kraft.base.mix(with: Tok.Kraft.deep, by: 0.25), location: 1),
                     ], startPoint: .top, endPoint: .bottom))
-                    GrainOverlay(image: Grain.kraft, opacity: 0.5).blendMode(.multiply).clipShape(shape)
+                    GrainOverlay(image: Grain.kraft, opacity: 0.5).surfaceGrain().clipShape(shape)
                     // Warm desk-lamp light from the top-left, falling off into a soft vignette.
-                    shape.fill(RadialGradient(colors: [Color(hex: 0xFFEBC8).opacity(0.22), .clear],
+                    shape.fill(RadialGradient(colors: [Tok.Kraft.lamp, .clear],
                                               center: UnitPoint(x: 0.18, y: -0.05), startRadius: 20, endRadius: 820))
-                    shape.fill(EllipticalGradient(colors: [.clear, Tok.Kraft.ink.opacity(0.16)], center: .center,
+                    shape.fill(EllipticalGradient(colors: [.clear, Tok.Kraft.vignette], center: .center,
                                                   startRadiusFraction: 0.55, endRadiusFraction: 0.95))
                     shape.strokeBorder(Tok.Kraft.deep.opacity(0.7), lineWidth: 1)
                     BoardProps()
                 }
                 .compositingGroup()
                 .shadow(color: .black.opacity(0.16), radius: 1, y: 1)
-                .shadow(color: Tok.Kraft.ink.opacity(0.16), radius: 18, y: 10)
+                .shadow(color: Tok.Shadow.board, radius: 18, y: 10)
             }
             .background(alignment: .topTrailing) {
                 GridSheet()

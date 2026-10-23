@@ -3,7 +3,7 @@ import KraftCore
 import Observation
 import SwiftUI
 
-/// The owner's UI preferences, in one place: language (applies on relaunch) and digits (applies live).
+/// The owner's UI preferences, in one place: language (applies on relaunch), digits and appearance (apply live).
 /// Views read it through the environment (`kraftEnvironment()`); services read `AppPreferences.shared`.
 @MainActor
 @Observable
@@ -12,6 +12,7 @@ final class AppPreferences {
 
     private enum Key {
         static let digits = "KraftDigits"
+        static let appearance = "KraftAppearance"
         static let languages = "AppleLanguages"
     }
 
@@ -26,6 +27,14 @@ final class AppPreferences {
         didSet { defaults.set(digits.rawValue, forKey: Key.digits) }
     }
 
+    /// System / Light / Dark for every window, panel, popover and menu (`NSApp.appearance`).
+    var appearance: AppAppearance {
+        didSet {
+            defaults.set(appearance.rawValue, forKey: Key.appearance)
+            applyAppearance()
+        }
+    }
+
     /// Written to the app's own `AppleLanguages`, which the next launch picks up.
     var language: AppLanguage {
         didSet {
@@ -37,6 +46,7 @@ final class AppPreferences {
         self.defaults = defaults
         runningLanguage = bundle.preferredLocalizations.first.map { String($0.prefix(2)) } ?? "en"
         digits = defaults.string(forKey: Key.digits).flatMap(DigitStyle.init(rawValue:)) ?? .western
+        appearance = AppAppearance(storedValue: defaults.string(forKey: Key.appearance))
         // Only the app's own override counts as a choice; the Mac's list (global domain) is "System".
         let own = bundle.bundleIdentifier.flatMap { defaults.persistentDomain(forName: $0)?[Key.languages] as? [String] }
         let choice = AppLanguage(appleLanguages: own)
@@ -47,6 +57,18 @@ final class AppPreferences {
     var format: KraftFormat { KraftFormat(language: runningLanguage, digits: digits) }
     var layoutDirection: LayoutDirection { format.isRightToLeft ? .rightToLeft : .leftToRight }
     var needsRelaunch: Bool { language != launchLanguage }
+
+    /// Nil follows the Mac. Desktop stickies and the ⌥Space panel inherit it with every other window.
+    func applyAppearance() {
+        NSApp?.appearance = switch appearance {
+        case .system: nil
+        case .light: NSAppearance(named: .aqua)
+        case .dark: NSAppearance(named: .darkAqua)
+        }
+    }
+
+    /// The scheme offscreen renders use (they have no window to inherit from); System renders light.
+    var snapshotScheme: ColorScheme { appearance == .dark ? .dark : .light }
 
     /// Starts a fresh copy once this one has quit, then quits.
     func relaunch() {

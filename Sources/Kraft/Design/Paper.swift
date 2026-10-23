@@ -170,7 +170,7 @@ struct RulingView: View {
 
 /// Translucent washi tape with zig-zag torn ends.
 struct WashiTape: View {
-    var tint: Color = .white
+    var tint: Color = Tok.Tape.plain
     var body: some View {
         ZigZagStrip()
             .fill(tint.opacity(0.55))

@@ -171,7 +171,6 @@ struct KindStickerButton: View {
         .accessibilityLabel(Text("Kind: \(kind.quickAddName)"))
         .popover(isPresented: $isOpen, arrowEdge: .bottom) {
             KindPicker(selected: kind) { model.setKind($0); isOpen = false }
-                .preferredColorScheme(.light)
         }
         .onChange(of: kind) {
             guard Motion.enabled, !reduceMotion else { return }
@@ -191,7 +190,7 @@ struct KindPicker: View {
                 Button { choose(kind) } label: {
                     VStack(spacing: 4) {
                         DieCutSticker(art: kind.sticker, size: 20)
-                        Text(kind.quickAddName).font(.system(size: 11, weight: .semibold)).foregroundStyle(Tok.Sticker.ink.opacity(0.8))
+                        Text(kind.quickAddName).font(.system(size: 11, weight: .semibold)).foregroundStyle(Tok.Sticker.label.opacity(0.8))
                     }
                     .frame(width: 84, height: 66)
                     .background {
