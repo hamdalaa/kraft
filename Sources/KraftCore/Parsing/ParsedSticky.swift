@@ -58,7 +58,7 @@ public struct ParsedSticky: Equatable, Sendable {
             return Sticky(kind: .reminder, title: title, body: body, reminder: reminder, style: style, createdAt: now)
         case .owedToMe, .iOwe, .bill:
             let money = MoneyInfo(person: person ?? "", amount: amount ?? 0,
-                                  currency: currency ?? Currency.default(for: amount ?? 0), dueDate: date)
+                                  currency: currency ?? .preferred, dueDate: date)
             return Sticky(kind: kind, title: title, body: body, money: money,
                           reminder: kind == .bill ? billReminder : nil, style: style, createdAt: now)
         }
@@ -100,9 +100,4 @@ public struct TimeOfDay: Equatable, Hashable, Sendable {
     public static let defaultReminder = TimeOfDay(hour: 9)
 }
 
-extension Currency {
-    /// No currency written: thousands mean dinars ("١٥٠ ألف"), small sums mean dollars ("40").
-    public static func `default`(for amount: Decimal) -> Currency {
-        amount >= 1000 ? .iqd : .usd
-    }
-}
+

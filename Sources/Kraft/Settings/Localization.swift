@@ -28,15 +28,6 @@ extension KraftFormat {
 
 // MARK: Display names
 
-extension Currency {
-    var title: LocalizedStringResource {
-        switch self {
-        case .iqd: "IQD"
-        case .usd: "USD"
-        }
-    }
-}
-
 extension PaperColor {
     var title: String {
         switch self {

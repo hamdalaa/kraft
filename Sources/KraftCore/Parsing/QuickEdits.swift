@@ -24,11 +24,14 @@ public struct QuickEdits: Equatable, Sendable {
 
 extension ParsedSticky {
     /// Parses `text` as `edits.kind` (if set) and lays the other corrections over the result.
-    public static func reading(_ text: String, edits: QuickEdits, now: Date = Date(), calendar: Calendar = .current) -> ParsedSticky {
-        QuickParser.parse(text, now: now, calendar: calendar, kind: edits.kind).applying(edits, now: now, calendar: calendar)
+    public static func reading(_ text: String, edits: QuickEdits, now: Date = Date(), calendar: Calendar = .current,
+                               currency: Currency = .preferred) -> ParsedSticky {
+        QuickParser.parse(text, now: now, calendar: calendar, kind: edits.kind, currency: currency)
+            .applying(edits, now: now, calendar: calendar, currency: currency)
     }
 
-    public func applying(_ edits: QuickEdits, now: Date = Date(), calendar cal: Calendar = .current) -> ParsedSticky {
+    public func applying(_ edits: QuickEdits, now: Date = Date(), calendar cal: Calendar = .current,
+                         currency preferred: Currency = .preferred) -> ParsedSticky {
         var p = self
         if kind.isMoney {
             switch edits.person {
@@ -42,7 +45,7 @@ extension ParsedSticky {
             case .removed: p.amount = nil
             }
             if let c = edits.currency { p.currency = c }
-            if p.amount != nil, p.currency == nil { p.currency = Currency.default(for: p.amount ?? 0) }
+            if p.amount != nil, p.currency == nil { p.currency = preferred }
             if p.kind != .bill { p.title = Wording.moneyTitle(p.kind, person: p.person, isArabic: direction == .rightToLeft) }
         }
         guard kind != .note else { return p }

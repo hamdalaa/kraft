@@ -62,35 +62,34 @@ enum MoneyRules {
     private static let n = Lex.number
     private static let mult = "(?:\\s?(?:(\(Lex.thousand))|(\(Lex.million))))"
 
-    /// $40, USD 40
-    private static let prefixed: NSRegularExpression = .make("(?:(\\$|us\\$|usd)|(iqd))\\s?\(n)\(mult)?\(r)")
-    /// 40$, 150k IQD, ١٥٠ ألف دينار, 35,000 د.ع
-    private static let suffixed: NSRegularExpression = .make("\(l)\(n)\(mult)?\\s?(?:(\(Lex.usd))|(\(Lex.iqd)))(?:(?<=\\$)|\(r))")
+    /// $40, €12, USD 40, SAR 40
+    private static let prefixed: NSRegularExpression = .make("(\(CurrencyWords.before))\\s?\(n)\(mult)?\(r)")
+    /// 40$, 12€, 150k IQD, ١٥٠ ألف دينار, 35,000 د.ع, 40 riyals
+    private static let suffixed: NSRegularExpression = .make("\(l)\(n)\(mult)?\\s?(\(CurrencyWords.after))(?:(?<=[^\\p{L}\\p{N}])|\(r))")
     /// 150k, ١٥٠ ألف
     private static let scaled: NSRegularExpression = .make("\(l)\(n)\(mult)\(r)")
     /// ألفين، ألف دينار، مليون
-    private static let wordOnly: NSRegularExpression = .make("\(l)(الفين|مليونين|الف|مليون)(?:\\s+(?:(دولار)|(دينار)))?\(r)")
+    private static let wordOnly: NSRegularExpression = .make("\(l)(الفين|مليونين|الف|مليون)(?:\\s+(\(CurrencyWords.after)))?\(r)")
     private static let bare: NSRegularExpression = .make("\(l)\(n)\(r)")
 
     /// The first amount in the text. Bare numbers ("Ali owes me 40") only count when `allowBare`.
-    static func amount(in s: TextScanner, allowBare: Bool) -> Amount? {
+    /// A written currency resolves against `preferred` ("$" is CA$ for someone whose default is CAD).
+    static func amount(in s: TextScanner, allowBare: Bool, preferred: Currency) -> Amount? {
         if let m = s.firstFree(prefixed) {
-            return make(s, m, number: 3, thousand: 4, million: 5, usd: m.range(at: 1).location != NSNotFound,
-                        iqd: m.range(at: 2).location != NSNotFound)
+            return make(s, m, number: 2, thousand: 3, million: 4, currency: s.group(m, 1), preferred: preferred)
         }
         if let m = s.firstFree(suffixed) {
-            return make(s, m, number: 1, thousand: 2, million: 3, usd: m.range(at: 4).location != NSNotFound,
-                        iqd: m.range(at: 5).location != NSNotFound)
+            return make(s, m, number: 1, thousand: 2, million: 3, currency: s.group(m, 4), preferred: preferred)
         }
         if let m = s.firstFree(scaled) {
-            return make(s, m, number: 1, thousand: 2, million: 3, usd: false, iqd: false)
+            return make(s, m, number: 1, thousand: 2, million: 3, currency: nil, preferred: preferred)
         }
         if let m = s.firstFree(wordOnly), let word = s.group(m, 1) {
             let value: Decimal = ["الفين": 2000, "مليونين": 2_000_000, "الف": 1000, "مليون": 1_000_000][word] ?? 0
-            let cur: Currency? = s.group(m, 2) != nil ? .usd : s.group(m, 3) != nil ? .iqd : nil
+            let cur = s.group(m, 2).flatMap { CurrencyWords.resolve($0, preferred: preferred) }
             return Amount(value: value, currency: cur, range: m.range)
         }
-        if allowBare, let m = s.firstFree(bare), var a = make(s, m, number: 1, thousand: nil, million: nil, usd: false, iqd: false) {
+        if allowBare, let m = s.firstFree(bare), var a = make(s, m, number: 1, thousand: nil, million: nil, currency: nil, preferred: preferred) {
             a.isBare = true
             return a
         }
@@ -98,11 +97,11 @@ enum MoneyRules {
     }
 
     private static func make(_ s: TextScanner, _ m: NSTextCheckingResult, number: Int, thousand: Int?, million: Int?,
-                             usd: Bool, iqd: Bool) -> Amount? {
+                             currency: String?, preferred: Currency) -> Amount? {
         guard let raw = s.group(m, number), var value = Decimal(string: raw.replacingOccurrences(of: ",", with: ""),
                                                                     locale: Locale(identifier: "en_US_POSIX")) else { return nil }
         if let thousand, s.group(m, thousand) != nil { value *= 1000 }
         if let million, s.group(m, million) != nil { value *= 1_000_000 }
-        return Amount(value: value, currency: usd ? .usd : iqd ? .iqd : nil, range: m.range)
+        return Amount(value: value, currency: currency.flatMap { CurrencyWords.resolve($0, preferred: preferred) }, range: m.range)
     }
 }

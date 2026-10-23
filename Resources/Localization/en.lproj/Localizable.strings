@@ -81,7 +81,6 @@
 "I owe" = "I owe";
 "In an hour" = "In an hour";
 "Ink" = "Ink";
-"IQD" = "IQD";
 "Kind" = "Kind";
 "Kind: %@" = "Kind: %@";
 "Kraft" = "Kraft";
@@ -197,7 +196,6 @@
 "Unpin from Desktop" = "Unpin from Desktop";
 "Untick Item" = "Untick Item";
 "Untitled" = "Untitled";
-"USD" = "USD";
 "Use this example" = "Use this example";
 "View" = "View";
 "Weekly" = "Weekly";
@@ -254,3 +252,6 @@
 "Medium" = "Medium";
 "Large" = "Large";
 "Drop to pin on the desktop" = "Drop to pin on the desktop";
+"All Currencies" = "All Currencies";
+"Currency" = "Currency";
+"Used when you write an amount without a currency. System follows your Mac’s region." = "Used when you write an amount without a currency. System follows your Mac’s region.";

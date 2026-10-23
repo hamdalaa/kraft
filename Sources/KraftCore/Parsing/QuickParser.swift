@@ -9,8 +9,9 @@ import Foundation
 /// money phrasing → amount → reminder / list phrasing → person. What nobody claimed becomes the title.
 /// `kind` forces a kind (the user switched it in the UI); the sentence is then read for that kind.
 public enum QuickParser {
+    /// `currency` is what an amount means when none is written: the owner's default (Settings › Currency).
     public static func parse(_ text: String, now: Date = Date(), calendar: Calendar = .current,
-                             kind forced: StickyKind? = nil) -> ParsedSticky {
+                             kind forced: StickyKind? = nil, currency preferred: Currency = .preferred) -> ParsedSticky {
         var s = TextScanner(text)
         let direction = ScriptDirection.detect(text)
         let sched = DateRules.scan(&s, now: now, calendar: calendar)
@@ -22,7 +23,7 @@ public enum QuickParser {
         }
         let hasBillHint = s.firstFree(MoneyRules.billHint) != nil
         let allowBare = trigger != nil || forced?.isMoney == true || hasBillHint || sched.repeatRule != .never
-        var amount = MoneyRules.amount(in: s, allowBare: allowBare)
+        var amount = MoneyRules.amount(in: s, allowBare: allowBare, preferred: preferred)
         if let a = amount, a.isBare, trigger == nil, forced?.isMoney != true, !hasBillHint, a.value < 1000 {
             amount = nil // "every day drink 8 glasses" is not a bill
         }
@@ -75,7 +76,7 @@ public enum QuickParser {
         var result = ParsedSticky(kind: kind, person: person, spans: [], direction: direction)
         if kind.isMoney, let amount {
             result.amount = amount.value
-            result.currency = amount.currency ?? Currency.default(for: amount.value)
+            result.currency = amount.currency ?? preferred
         }
         if kind != .note {
             result.repeatRule = sched.repeatRule

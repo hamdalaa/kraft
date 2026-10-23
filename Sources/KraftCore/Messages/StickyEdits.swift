@@ -61,7 +61,7 @@ public enum StickyEdits {
             s.reminder = nil
         }
         if kind.isMoney {
-            var money = s.money ?? MoneyInfo(person: "", amount: 0, currency: .iqd)
+            var money = s.money ?? MoneyInfo(person: "", amount: 0, currency: .preferred)
             if kind == .bill, let due = money.dueDate {
                 money.dueDate = billDue(day: calendar.component(.day, from: due), after: now, calendar: calendar)
             }

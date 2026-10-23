@@ -55,9 +55,4 @@ import Testing
     @Test(arguments: englishCases) func english(_ e: Expect) { check(e) }
     @Test(arguments: arabicCases) func arabic(_ e: Expect) { check(e) }
     @Test(arguments: billsCases) func bills(_ e: Expect) { check(e) }
-
-    @Test func thousandsMeanDinarsSmallSumsMeanDollars() {
-        #expect(Currency.default(for: 40) == .usd)
-        #expect(Currency.default(for: 150_000) == .iqd)
-    }
 }

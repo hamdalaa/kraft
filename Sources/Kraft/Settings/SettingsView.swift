@@ -27,6 +27,8 @@ struct SettingsView: View {
             EditorPerforation()
             digits
             EditorPerforation()
+            currency
+            EditorPerforation()
             SettingsUpdates(updater: updater)
         }
         .padding(.horizontal, 26)
@@ -104,13 +106,40 @@ struct SettingsView: View {
             }
             // A live sample of what changes: money, dates, times and counts.
             HStack(spacing: 8) {
-                GlossyTag(text: format.money(150_000, .iqd), symbol: "banknote", tint: .pink, size: .mini)
+                GlossyTag(text: format.money(1_250, preferences.currency), symbol: "banknote", tint: .pink, size: .mini)
                 GlossyTag(text: format.dayMonth(Date()), symbol: "calendar", tint: .blue, size: .mini)
                 GlossyTag(text: format.time(Self.nineAM), symbol: "bell.fill", tint: .amber, size: .mini)
             }
             .padding(.top, 2)
             .accessibilityElement(children: .combine)
             .accessibilityLabel(Text("Sample"))
+        }
+    }
+
+    /// System follows the Mac's region; any other currency can be picked from the full list.
+    private var currency: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            EditorLabel("Currency")
+            HStack(spacing: 8) {
+                SettingsChoice(title: String(localized: "System"), isOn: preferences.currencyChoice == nil, tint: .pink) {
+                    preferences.currencyChoice = nil
+                }
+                Menu {
+                    CurrencyMenuItems(selected: preferences.currency) { preferences.currencyChoice = $0 }
+                } label: {
+                    let t: TagTint = preferences.currencyChoice == nil ? .paper : .pink
+                    EmbossedLabel(text: preferences.currency.menuTitle(format), symbol: "chevron.down", tint: t, size: .regular)
+                        .fixedSize()
+                }
+                .menuStyle(.button)
+                .buttonStyle(GlossyButtonStyle(tint: preferences.currencyChoice == nil ? .paper : .pink))
+                .menuIndicator(.hidden)
+                .fixedSize()
+            }
+            Text("Used when you write an amount without a currency. System follows your Mac’s region.")
+                .font(.system(size: 12.5))
+                .foregroundStyle(Tok.Kraft.ink.opacity(0.62))
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 

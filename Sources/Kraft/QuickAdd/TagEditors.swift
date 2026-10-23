@@ -60,13 +60,7 @@ struct TagEditor: View {
                 TextField(String(localized: "Amount"), value: amountBinding, format: .number)
                     .textFieldStyle(.roundedBorder)
                     .onSubmit(close)
-                Picker("", selection: currencyBinding) {
-                    Text(verbatim: "$").tag(Currency.usd)
-                    Text(Currency.iqd.title).tag(Currency.iqd)
-                }
-                .pickerStyle(.segmented)
-                .labelsHidden()
-                .fixedSize()
+                CurrencyMenuButton(selected: currencyBinding.wrappedValue, tint: .pink) { currencyBinding.wrappedValue = $0 }
             }
         case .date:
             DatePicker("", selection: dayBinding, displayedComponents: .date)
@@ -125,7 +119,7 @@ struct TagEditor: View {
     }
 
     private var currencyBinding: Binding<Currency> {
-        Binding(get: { parsed.currency ?? Currency.default(for: parsed.amount ?? 0) }, set: { c in edit { $0.currency = c } })
+        Binding(get: { parsed.currency ?? .preferred }, set: { c in edit { $0.currency = c } })
     }
 
     /// Defaults when adding a missing date: tomorrow.

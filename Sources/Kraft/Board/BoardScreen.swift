@@ -38,13 +38,22 @@ final class BoardModel {
         withAnimation(.spring(duration: 0.4, bounce: 0.12)) { editingID = nil }
     }
 
-    /// Open money totals per currency, for the header chips.
-    func openTotal(_ kind: StickyKind, _ currency: Currency) -> Decimal {
-        BoardTab.all.filter(stickies)
-            .filter { $0.kind == kind }
-            .compactMap(\.money)
-            .filter { $0.currency == currency }
-            .reduce(0) { $0 + $1.remaining }
+    /// Open money per currency for the header chips, never added across currencies: the default currency
+    /// first, then the largest amounts.
+    func openTotals(_ kind: StickyKind) -> [(currency: Currency, amount: Decimal)] {
+        let open = BoardTab.all.filter(stickies).filter { $0.kind == kind }.compactMap(\.money)
+        let sums = Dictionary(grouping: open, by: \.currency).mapValues { $0.reduce(0) { $0 + $1.remaining } }
+        let preferred = Currency.preferred
+        return sums.filter { $0.value > 0 }
+            .map { (currency: $0.key, amount: $0.value) }
+            .sorted { ($0.currency == preferred ? 1 : 0, $0.amount) > ($1.currency == preferred ? 1 : 0, $1.amount) }
+    }
+
+    /// "$30 · €12 · 150,000 IQD"
+    func openTotalsText(_ kind: StickyKind, _ format: KraftFormat) -> String? {
+        let totals = openTotals(kind)
+        guard !totals.isEmpty else { return nil }
+        return totals.map { format.money($0.amount, $0.currency) }.joined(separator: " · ")
     }
 }
 
@@ -121,14 +130,12 @@ struct BoardScreen: View {
             }
             Spacer()
             HStack(spacing: 10) {
-                let owed = model.openTotal(.owedToMe, .usd)
-                if owed > 0 {
-                    GlossyTag(text: String(localized: "Owed to you  \(format.money(owed, .usd))"),
+                if let owed = model.openTotalsText(.owedToMe, format) {
+                    GlossyTag(text: String(localized: "Owed to you  \(owed)"),
                               symbol: format.symbol("arrow.down.left"), tint: .mint, size: .regular)
                 }
-                let owe = model.openTotal(.iOwe, .iqd)
-                if owe > 0 {
-                    GlossyTag(text: String(localized: "You owe  \(format.money(owe, .iqd))"),
+                if let owe = model.openTotalsText(.iOwe, format) {
+                    GlossyTag(text: String(localized: "You owe  \(owe)"),
                               symbol: format.symbol("arrow.up.right"), tint: .pink, size: .regular)
                 }
                 let today = model.count(.today)

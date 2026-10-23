@@ -15,8 +15,6 @@ enum Lex {
     /// "k", "thousand", "ألف"/"الف"/"آلاف", "million"/"مليون".
     static let thousand = alt(["k", "thousand", "grand", "الف", "الاف", "تلاف"])
     static let million = alt(["mn", "million", "مليون", "ملايين"])
-    static let usd = alt(["\\$", "usd", "us\\$", "dollars?", "bucks", "دولار", "دولارات", "دولارا", "دولر", "دولار امريكي"])
-    static let iqd = alt(["iqd", "dinars?", "دينار", "دنانير", "د\\.\\s?ع", "د ع", "ع\\.د"])
 
     // MARK: Days
 

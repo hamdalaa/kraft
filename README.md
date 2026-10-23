@@ -31,7 +31,7 @@ no ads. It is built to feel like Apple made a stationery app: calm, tactile, pre
 
 ## Features
 
-- 💸 **Money stickies** — *Someone owes me* / *I owe someone*: person, amount (IQD or USD), due date, partial
+- 💸 **Money stickies** — *Someone owes me* / *I owe someone*: person, amount in any currency (€40, £12, 200 SAR, ¥3,000…), due date, partial
   payments, what is left, and a **PAID** stamp that thumps on when it is settled.
 - 💬 **"Remind them"** — a polite message in English or Arabic, ready to copy or open in WhatsApp.
 - ⏰ **Reminders** — date, time, repeat (daily / weekly / monthly / yearly). One calm notification with
@@ -51,6 +51,8 @@ no ads. It is built to feel like Apple made a stationery app: calm, tactile, pre
 - 🌙 **Light and "night desk" dark** — the same kraft desk under a warm lamp. System / Light / Dark in Settings.
 - 🔄 **Updates from GitHub** — Settings › Updates checks this repo's latest release, installs it and relaunches.
   It checks once a day on its own (you can turn that off), or use **Kraft › Check for Updates…**.
+- 💱 **Every currency** — write `€40`, `£12.50`, `200 riyals` or `٥٠ درهم` and Kraft knows which one. Amounts without one use
+  your default currency (Settings › Currency, which follows your Mac's region). Totals are kept per currency.
 - 🌍 **Full English + Arabic UI** with right-to-left layout and a Western (123) / Arabic (١٢٣) digits option.
   Each note picks its handwriting and direction from its own text.
 

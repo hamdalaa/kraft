@@ -66,7 +66,7 @@ struct EditorMoneyFields: View {
     @State private var showsRemind = false
     @Environment(\.kraftFormat) private var format
 
-    private var money: MoneyInfo { sticky.money ?? MoneyInfo(person: "", amount: 0, currency: .iqd) }
+    private var money: MoneyInfo { sticky.money ?? MoneyInfo(person: "", amount: 0, currency: .preferred) }
     private var arabic: Bool { Hand(text: sticky.primaryText).direction == .rightToLeft }
 
     var body: some View {
@@ -168,7 +168,7 @@ struct EditorMoneyFields: View {
     }
 }
 
-/// Amount slip (Western or Arabic digits) and the IQD / USD tags.
+/// Amount slip (Western or Arabic digits) and the currency menu.
 private struct EditorAmountRow: View {
     let money: MoneyInfo
     let edit: StickyEditing
@@ -191,10 +191,8 @@ private struct EditorAmountRow: View {
                         edit.change(String(localized: "Change Amount"), coalesce: true) { $0.money?.amount = value }
                     }
             }
-            ForEach(Currency.allCases, id: \.self) { c in
-                EditorChip(c.title, isOn: money.currency == c, tint: .mint) {
-                    edit.change(String(localized: "Change Currency")) { $0.money?.currency = c }
-                }
+            CurrencyMenuButton(selected: money.currency) { c in
+                edit.change(String(localized: "Change Currency")) { $0.money?.currency = c }
             }
         }
         .onChange(of: money.amount) {
@@ -247,7 +245,7 @@ struct EditorBillFields: View {
 
     @Environment(\.kraftFormat) private var format
 
-    private var money: MoneyInfo { sticky.money ?? MoneyInfo(person: "", amount: 0, currency: .iqd) }
+    private var money: MoneyInfo { sticky.money ?? MoneyInfo(person: "", amount: 0, currency: .preferred) }
     private var dueDay: Int? { money.dueDate.map { Calendar.current.component(.day, from: $0) } }
 
     var body: some View {

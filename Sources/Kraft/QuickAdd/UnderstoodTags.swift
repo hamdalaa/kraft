@@ -24,7 +24,7 @@ struct UnderstoodTag: Identifiable {
         }
         if p.kind.isMoney {
             out.append(p.amount.map {
-                UnderstoodTag(field: .amount, text: format.money($0, p.currency ?? Currency.default(for: $0)),
+                UnderstoodTag(field: .amount, text: format.money($0, p.currency ?? .preferred),
                               symbol: "banknote.fill", tint: .pink)
             } ?? ghost(.amount, String(localized: "Amount"), "banknote"))
         }

@@ -37,8 +37,8 @@ public enum SampleData {
             ),
             Sticky(
                 kind: .iOwe, title: "إيجار أحمد",
-                money: MoneyInfo(person: "أحمد", amount: 150_000, currency: .iqd, dueDate: day(-1),
-                                 payments: [Payment(amount: 150_000, date: day(-1))]),
+                money: MoneyInfo(person: "أحمد", amount: 400, currency: .usd, dueDate: day(-1),
+                                 payments: [Payment(amount: 400, date: day(-1))]),
                 style: PaperStyle(color: .pink, size: .medium, fastener: .tape, tilt: 2.6),
                 createdAt: day(-9)
             ),
@@ -50,7 +50,7 @@ public enum SampleData {
             ),
             Sticky(
                 kind: .bill, title: "Internet",
-                money: MoneyInfo(person: "Earthlink", amount: 35_000, currency: .iqd, dueDate: day(2)),
+                money: MoneyInfo(person: "Home Wi-Fi", amount: 35, currency: .usd, dueDate: day(2)),
                 reminder: nil,
                 style: PaperStyle(color: .peach, size: .small, tilt: 1.1),
                 createdAt: day(-20)

@@ -14,6 +14,7 @@ final class AppPreferences {
         static let digits = "KraftDigits"
         static let appearance = "KraftAppearance"
         static let languages = "AppleLanguages"
+        static let currency = "KraftCurrency"
     }
 
     @ObservationIgnored private let defaults: UserDefaults
@@ -35,6 +36,17 @@ final class AppPreferences {
         }
     }
 
+    /// The default currency, or nil to follow the Mac's region. Amounts written without a currency, new money
+    /// notes and the Settings sample use it; it is pushed to `Currency.preferred` for the parser.
+    var currencyChoice: Currency? {
+        didSet {
+            if let currencyChoice { defaults.set(currencyChoice.code, forKey: Key.currency) } else { defaults.removeObject(forKey: Key.currency) }
+            if self === Self.shared { Currency.preferred = currency }
+        }
+    }
+
+    var currency: Currency { currencyChoice ?? .regional }
+
     /// Written to the app's own `AppleLanguages`, which the next launch picks up.
     var language: AppLanguage {
         didSet {
@@ -47,11 +59,13 @@ final class AppPreferences {
         runningLanguage = bundle.preferredLocalizations.first.map { String($0.prefix(2)) } ?? "en"
         digits = defaults.string(forKey: Key.digits).flatMap(DigitStyle.init(rawValue:)) ?? .western
         appearance = AppAppearance(storedValue: defaults.string(forKey: Key.appearance))
+        currencyChoice = defaults.string(forKey: Key.currency).flatMap(Currency.init(rawValue:))
         // Only the app's own override counts as a choice; the Mac's list (global domain) is "System".
         let own = bundle.bundleIdentifier.flatMap { defaults.persistentDomain(forName: $0)?[Key.languages] as? [String] }
         let choice = AppLanguage(appleLanguages: own)
         language = choice
         launchLanguage = choice
+        if bundle == .main, defaults == .standard { Currency.preferred = currency }
     }
 
     var format: KraftFormat { KraftFormat(language: runningLanguage, digits: digits) }

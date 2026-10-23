@@ -81,7 +81,6 @@
 "I owe" = "عليّ دين";
 "In an hour" = "بعد ساعة";
 "Ink" = "الحبر";
-"IQD" = "دينار";
 "Kind" = "النوع";
 "Kind: %@" = "النوع: %@";
 "Kraft" = "Kraft";
@@ -197,7 +196,6 @@
 "Unpin from Desktop" = "إزالة من سطح المكتب";
 "Untick Item" = "إلغاء تأشير البند";
 "Untitled" = "بلا عنوان";
-"USD" = "دولار";
 "Use this example" = "استخدام هذا المثال";
 "View" = "عرض";
 "Weekly" = "أسبوعيًا";
@@ -254,3 +252,6 @@
 "Medium" = "متوسط";
 "Large" = "كبير";
 "Drop to pin on the desktop" = "أفلِته لتثبيته على سطح المكتب";
+"All Currencies" = "كل العملات";
+"Currency" = "العملة";
+"Used when you write an amount without a currency. System follows your Mac’s region." = "تُستخدم حين تكتب مبلغًا بلا عملة. خيار «النظام» يتبع منطقة جهاز Mac.";

@@ -34,7 +34,7 @@ public struct KraftFormat: Sendable, Equatable {
     /// Counts and amounts with grouping: "1,250" / "١٬٢٥٠".
     public func number(_ n: Int) -> String { n.formatted(.number.locale(locale)) }
 
-    /// Money in the UI language: "$40", "150,000 IQD", "١٥٠٬٠٠٠ د.ع".
+    /// Money in the UI language: "$40", "€12.50", "40 SAR", "١٥٠٬٠٠٠ د.ع".
     public func money(_ amount: Decimal, _ currency: Currency) -> String {
         MoneyFormat.string(amount, currency, arabic: isArabic, digits: digits)
     }

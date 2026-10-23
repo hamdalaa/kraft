@@ -16,8 +16,9 @@ enum PF {
         calendar.date(from: DateComponents(year: y, month: m, day: d, hour: h, minute: min))!
     }
 
-    static func parse(_ text: String, kind: StickyKind? = nil, now: Date = PF.now) -> ParsedSticky {
-        QuickParser.parse(text, now: now, calendar: calendar, kind: kind)
+    /// The fixture's owner lives in Baghdad, so an amount with no currency written means dinars.
+    static func parse(_ text: String, kind: StickyKind? = nil, now: Date = PF.now, currency: Currency = .iqd) -> ParsedSticky {
+        QuickParser.parse(text, now: now, calendar: calendar, kind: kind, currency: currency)
     }
 }
 
