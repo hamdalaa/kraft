@@ -23,6 +23,7 @@ struct KraftApp: App {
         .windowBackgroundDragBehavior(.enabled)
         .defaultSize(width: 1220, height: 820)
         .commands {
+            CommandGroup(after: .appInfo) { CheckForUpdatesCommand() }
             CommandGroup(replacing: .newItem) {
                 Button("New Sticky") { services.board.isQuickAddPresented = true }
                     .keyboardShortcut("n")
@@ -55,7 +56,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        MainActor.assumeIsolated { AppServices.shared.start() }
+        MainActor.assumeIsolated {
+            AppServices.shared.start()
+            Updater.shared.checkAutomaticallyIfDue()
+        }
     }
 
     // Dock click: bring the board back even when desktop stickies count as visible windows.
@@ -66,4 +70,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     // Stay alive with the window closed: desktop stickies, ⌥Space and reminders keep working.
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { false }
+}
+
+/// App menu › «Check for Updates…» (or «Update Available…» once a check found one): opens Settings and checks.
+private struct CheckForUpdatesCommand: View {
+    @Environment(\.openSettings) private var openSettings
+    private let updater = Updater.shared
+
+    var body: some View {
+        Button(updater.availableRelease == nil ? "Check for Updates…" : "Update Available…") {
+            openSettings()
+            NSApp.activate()
+            if updater.availableRelease == nil { Task { await updater.check() } }
+        }
+    }
 }

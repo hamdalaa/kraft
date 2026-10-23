@@ -25,7 +25,8 @@ fi
 for l in Resources/Localization/*.lproj; do [ -d "$l" ] && cp -R "$l" "$APP/Contents/Resources/"; done
 [ -f Resources/AppIcon.icns ] && cp Resources/AppIcon.icns "$APP/Contents/Resources/"
 
-VERSION=$(git describe --tags --always 2>/dev/null || echo 0.1)
+SHORT_VERSION=$(cat VERSION 2>/dev/null || echo 0.1)   # what the updater compares with GitHub releases (vX.Y.Z)
+VERSION=$(git describe --tags --always 2>/dev/null || echo "$SHORT_VERSION")
 cat > "$APP/Contents/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -36,7 +37,7 @@ cat > "$APP/Contents/Info.plist" <<PLIST
   <key>CFBundleDisplayName</key><string>Kraft</string>
   <key>CFBundleExecutable</key><string>Kraft</string>
   <key>CFBundlePackageType</key><string>APPL</string>
-  <key>CFBundleShortVersionString</key><string>0.1</string>
+  <key>CFBundleShortVersionString</key><string>${SHORT_VERSION}</string>
   <key>CFBundleVersion</key><string>${VERSION}</string>
   <key>CFBundleIconFile</key><string>AppIcon</string>
   <key>CFBundleDevelopmentRegion</key><string>en</string>

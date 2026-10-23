@@ -1,9 +1,10 @@
 import KraftCore
 import SwiftUI
 
-/// ⌘, — a card of page stock taped to the warm page: appearance, language and digits, as glossy choice tags.
+/// ⌘, — a card of page stock taped to the warm page: appearance, language and digits as glossy choice tags, then updates.
 struct SettingsView: View {
     @Environment(AppPreferences.self) private var preferences
+    var updater: Updater = .shared
     @Environment(\.kraftFormat) private var format
 
     static let width: CGFloat = 460
@@ -25,6 +26,8 @@ struct SettingsView: View {
             language
             EditorPerforation()
             digits
+            EditorPerforation()
+            SettingsUpdates(updater: updater)
         }
         .padding(.horizontal, 26)
         .padding(.top, 26)

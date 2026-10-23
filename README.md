@@ -47,6 +47,8 @@ no ads. It is built to feel like Apple made a stationery app: calm, tactile, pre
 - 🗑 **Throw notes away** — drag a note: it crumples in your hand and flies into the waste bin. *Put Back* or ⌘Z.
 - ↩️ **Undo everything**, **daily backups**, and a per-record merge format that is ready for iCloud Drive sync.
 - 🌙 **Light and "night desk" dark** — the same kraft desk under a warm lamp. System / Light / Dark in Settings.
+- 🔄 **Updates from GitHub** — Settings › Updates checks this repo's latest release, installs it and relaunches.
+  It checks once a day on its own (you can turn that off), or use **Kraft › Check for Updates…**.
 - 🌍 **Full English + Arabic UI** with right-to-left layout and a Western (123) / Arabic (١٢٣) digits option.
   Each note picks its handwriting and direction from its own text.
 
@@ -68,9 +70,9 @@ no ads. It is built to feel like Apple made a stationery app: calm, tactile, pre
 |---|---|
 | <img src="docs/images/board-dark.jpg" alt="Kraft board in dark mode: a warm brown night desk with dimmed pastel sticky notes"> | <img src="docs/images/editor-ar-dark.jpg" alt="Sticky editor in dark mode with the Arabic right-to-left interface"> |
 
-| A polite reminder, in Arabic | Language and digits |
+| A polite reminder, in Arabic | Settings and updates |
 |---|---|
-| <img src="docs/images/remind-ar.jpg" alt="Remind them popover with a polite Arabic message, copy and WhatsApp buttons"> | <img src="docs/images/settings.jpg" alt="Settings: System, English or Arabic, Western or Arabic digits"> |
+| <img src="docs/images/remind-ar.jpg" alt="Remind them popover with a polite Arabic message, copy and WhatsApp buttons"> | <img src="docs/images/settings.jpg" alt="Settings: appearance, language, digits, and Updates with a newer release ready to install"> |
 
 <div align="center">
 <img src="docs/images/crumple-stages.png" alt="Five stages of a sticky note crumpling into a paper ball, next to the waste bin" width="100%">

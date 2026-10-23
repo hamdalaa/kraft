@@ -18,6 +18,14 @@ extension Snapshot {
         return [
             ("settings", AnyView(SettingsView().kraftEnvironment(fresh))),
             ("settings-relaunch", AnyView(SettingsView().kraftEnvironment(changed))),
+            ("settings-update", AnyView(SettingsView(updater: sampleUpdater(defaults)).kraftEnvironment(fresh))),
         ]
+    }
+
+    /// Settings › Updates with a newer release waiting (no network: the release is made up here).
+    private static func sampleUpdater(_ defaults: UserDefaults) -> Updater {
+        let release = AppRelease(version: AppVersion("9.9.0")!, title: "Kraft 9.9", notes: "",
+                                 pageURL: Updater.releasesURL, downloadURL: nil)
+        return Updater(defaults: defaults, state: .available(release))
     }
 }
