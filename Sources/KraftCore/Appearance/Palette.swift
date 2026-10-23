@@ -82,6 +82,12 @@ public enum Palette {
         public static let slipEdge = Swatch(0xE6D7BC, dark: RGB(hex: 0xE6D7BC).lamplit.hex)
     }
 
+    /// Objects that keep their colour by lamplight: ruling ink on paper, the steel paperclip.
+    public enum Material {
+        public static let ruling = Swatch.fixed(0x3B6FB6)
+        public static let steel = [Swatch.fixed(0xF4F5F7), .fixed(0x9EA3AB), .fixed(0xE3E5E9), .fixed(0x7D828B)]
+    }
+
     public enum Paper {
         public static let lemon = Swatch.paper(0xFFF1A8)
         public static let mint = Swatch.paper(0xDDF6D2)

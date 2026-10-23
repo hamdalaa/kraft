@@ -103,6 +103,11 @@ enum Tok {
         static let example = Color(Palette.Card.example)
     }
 
+    enum Material {
+        static let ruling = Color(Palette.Material.ruling)
+        static let steel = Palette.Material.steel.map(Color.init)
+    }
+
     enum Tape {
         static let plain = Color(Palette.Tape.plain)
         static let slipEdge = Color(Palette.Tape.slipEdge)
