@@ -1,0 +1,6 @@
+.build/
+build/
+.swiftpm/
+Resources/PrivateFonts/
+snapshots/
+.DS_Store
